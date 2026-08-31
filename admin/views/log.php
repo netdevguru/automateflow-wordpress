@@ -64,15 +64,15 @@ defined( 'ABSPATH' ) || exit;
 						<td><?php echo esc_html( (string) $af_entry['message'] ); ?></td>
 						<td>
 							<?php if ( ! empty( $af_entry['context'] ) && is_array( $af_entry['context'] ) ) : ?>
-								<code><?php
+								<?php
 								$af_pairs = array();
 
 								foreach ( $af_entry['context'] as $af_key => $af_value ) {
 									$af_pairs[] = $af_key . '=' . $af_value;
 								}
 
-								echo esc_html( implode( ' ', $af_pairs ) );
-								?></code>
+								?>
+								<code><?php echo esc_html( implode( ' ', $af_pairs ) ); ?></code>
 							<?php else : ?>
 								—
 							<?php endif; ?>

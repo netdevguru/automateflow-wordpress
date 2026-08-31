@@ -246,9 +246,11 @@ class AutomateFlow_Client {
 		return implode( ' | ', $parts );
 	}
 
-	/* --------------------------------------------------------------------- *
+	/*
+	 * ---------------------------------------------------------------------
 	 * Endpoint wrappers
-	 * --------------------------------------------------------------------- */
+	 * ---------------------------------------------------------------------
+	 */
 
 	/**
 	 * Create or update a contact.
@@ -285,7 +287,15 @@ class AutomateFlow_Client {
 	 * @return array<string, mixed>|WP_Error
 	 */
 	public function get_contacts( $page = 1, $per_page = 25 ) {
-		return $this->request( 'GET', '/contacts', null, array( 'page' => (string) absint( $page ), 'per_page' => (string) absint( $per_page ) ) );
+		return $this->request(
+			'GET',
+			'/contacts',
+			null,
+			array(
+				'page'     => (string) absint( $page ),
+				'per_page' => (string) absint( $per_page ),
+			)
+		);
 	}
 
 	/**
@@ -330,7 +340,15 @@ class AutomateFlow_Client {
 	 * @return array<string, mixed>|WP_Error
 	 */
 	public function get_campaigns( $page = 1, $per_page = 20 ) {
-		return $this->request( 'GET', '/campaigns', null, array( 'page' => (string) absint( $page ), 'per_page' => (string) absint( $per_page ) ) );
+		return $this->request(
+			'GET',
+			'/campaigns',
+			null,
+			array(
+				'page'     => (string) absint( $page ),
+				'per_page' => (string) absint( $per_page ),
+			)
+		);
 	}
 
 	/**

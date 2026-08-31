@@ -1,0 +1,542 @@
+# Copyright (C) 2026 AutomateFlow
+# This file is distributed under the GPL-2.0-or-later license.
+msgid ""
+msgstr ""
+"Project-Id-Version: AutomateFlow 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/netdevguru/AutomateFlow/issues\n"
+"POT-Creation-Date: 2026-09-01 00:49\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: automateflow\n"
+
+#: admin/class-automateflow-admin.php:76 admin/class-automateflow-admin.php:77
+#: admin/views/settings.php:20
+msgid "AutomateFlow"
+msgstr ""
+
+#: admin/class-automateflow-admin.php:87 admin/class-automateflow-admin.php:88
+msgid "Settings"
+msgstr ""
+
+#: admin/class-automateflow-admin.php:97 admin/class-automateflow-admin.php:98
+msgid "Campaigns"
+msgstr ""
+
+#: admin/class-automateflow-admin.php:107
+#: admin/class-automateflow-admin.php:108
+msgid "Activity Log"
+msgstr ""
+
+#: admin/class-automateflow-admin.php:384
+msgid "No campaign was selected."
+msgstr ""
+
+#: admin/class-automateflow-admin.php:394
+msgid "Campaign send started from WordPress."
+msgstr ""
+
+#: admin/class-automateflow-admin.php:412
+msgid "You do not have permission to manage AutomateFlow."
+msgstr ""
+
+#: admin/class-automateflow-admin.php:491
+msgid "Settings saved."
+msgstr ""
+
+#: admin/class-automateflow-admin.php:492
+msgid "Connected to AutomateFlow successfully."
+msgstr ""
+
+#: admin/class-automateflow-admin.php:493
+msgid "Cached form definitions cleared."
+msgstr ""
+
+#: admin/class-automateflow-admin.php:494
+msgid "Campaign send started."
+msgstr ""
+
+#: admin/class-automateflow-admin.php:514
+#, php-format
+msgid "%d user queued for sync. They will be sent in the background."
+msgid_plural "%d users queued for sync. They will be sent in the background."
+msgstr[0] ""
+msgstr[1] ""
+
+#: admin/class-automateflow-admin.php:533
+msgid "The request to AutomateFlow failed."
+msgstr ""
+
+#: admin/views/campaigns.php:30
+msgid "AutomateFlow Campaigns"
+msgstr ""
+
+#: admin/views/campaigns.php:37
+msgid "No campaigns found in this workspace."
+msgstr ""
+
+#: admin/views/campaigns.php:42
+msgid "Campaign statistics"
+msgstr ""
+
+#: admin/views/campaigns.php:44
+msgid "sent"
+msgstr ""
+
+#: admin/views/campaigns.php:45
+msgid "delivered"
+msgstr ""
+
+#: admin/views/campaigns.php:46
+msgid "opened"
+msgstr ""
+
+#: admin/views/campaigns.php:47
+msgid "clicked"
+msgstr ""
+
+#: admin/views/campaigns.php:48
+msgid "bounced"
+msgstr ""
+
+#: admin/views/campaigns.php:51
+msgid ""
+"Open rates count loaded tracking pixels, which include some machine fetches. "
+"Treat them as directional."
+msgstr ""
+
+#: admin/views/campaigns.php:59
+msgid "Name"
+msgstr ""
+
+#: admin/views/campaigns.php:60
+msgid "Subject"
+msgstr ""
+
+#: admin/views/campaigns.php:61
+msgid "Status"
+msgstr ""
+
+#: admin/views/campaigns.php:62
+msgid "Recipients"
+msgstr ""
+
+#: admin/views/campaigns.php:63
+msgid "Actions"
+msgstr ""
+
+#: admin/views/campaigns.php:90
+msgid "Stats"
+msgstr ""
+
+#: admin/views/campaigns.php:99
+msgid "Start sending this campaign now? This cannot be undone."
+msgstr ""
+
+#: admin/views/campaigns.php:100
+msgid "Send now"
+msgstr ""
+
+#: admin/views/log.php:13
+msgid "AutomateFlow Activity"
+msgstr ""
+
+#. translators: %d: maximum number of retained entries.
+#: admin/views/log.php:20
+#, php-format
+msgid ""
+"The most recent %d events. Payloads are never recorded here — only outcomes."
+msgstr ""
+
+#: admin/views/log.php:28
+msgid "Nothing logged yet."
+msgstr ""
+
+#: admin/views/log.php:33
+msgid "Clear log"
+msgstr ""
+
+#: admin/views/log.php:39
+msgid "When"
+msgstr ""
+
+#: admin/views/log.php:40
+msgid "Level"
+msgstr ""
+
+#: admin/views/log.php:41
+msgid "Message"
+msgstr ""
+
+#: admin/views/log.php:42
+msgid "Detail"
+msgstr ""
+
+#. translators: %s: human-readable interval, e.g. "5 mins".
+#: admin/views/log.php:53
+#, php-format
+msgid "%s ago"
+msgstr ""
+
+#: admin/views/settings.php:24
+msgid ""
+"Enter your AutomateFlow site URL and an API key to switch features on. "
+"Create a key under API Keys in your AutomateFlow workspace — it needs both "
+"read and write scope."
+msgstr ""
+
+#: admin/views/settings.php:31
+msgid "Last API error:"
+msgstr ""
+
+#: admin/views/settings.php:33
+msgid "ago"
+msgstr ""
+
+#: admin/views/settings.php:42
+msgid "Connection"
+msgstr ""
+
+#: admin/views/settings.php:45
+msgid "AutomateFlow URL"
+msgstr ""
+
+#: admin/views/settings.php:50
+msgid ""
+"The root URL of your AutomateFlow install, with no trailing slash. Requests "
+"go to /api/v1 beneath it."
+msgstr ""
+
+#: admin/views/settings.php:54
+msgid "API key"
+msgstr ""
+
+#: admin/views/settings.php:58
+msgid "Saved — leave blank to keep it"
+msgstr ""
+
+#: admin/views/settings.php:58
+msgid "Paste your key"
+msgstr ""
+
+#: admin/views/settings.php:59
+msgid ""
+"Shown once by AutomateFlow when the key is created. Leave this blank to keep "
+"the stored key; the saved value is never sent back to your browser."
+msgstr ""
+
+#: admin/views/settings.php:64
+msgid "Features"
+msgstr ""
+
+#: admin/views/settings.php:65
+msgid ""
+"Everything is off until you switch it on. Nothing leaves this site while a "
+"feature is disabled."
+msgstr ""
+
+#: admin/views/settings.php:74
+msgid "Enabled"
+msgstr ""
+
+#: admin/views/settings.php:77
+msgid "WooCommerce is not active on this site, so this has no effect."
+msgstr ""
+
+#: admin/views/settings.php:79
+msgid ""
+"Replaces the site's outgoing mail transport. If a send fails, the message "
+"falls back to the WordPress default rather than being dropped."
+msgstr ""
+
+#: admin/views/settings.php:86
+msgid "Contact sync"
+msgstr ""
+
+#: admin/views/settings.php:89
+msgid "Default list"
+msgstr ""
+
+#: admin/views/settings.php:92 admin/views/settings.php:176
+msgid "Connect to AutomateFlow to choose a list."
+msgstr ""
+
+#: admin/views/settings.php:96
+msgid "— None —"
+msgstr ""
+
+#: admin/views/settings.php:107 admin/views/settings.php:110
+msgid "Roles to sync"
+msgstr ""
+
+#: admin/views/settings.php:119
+msgid "Leave every box unticked to sync all roles."
+msgstr ""
+
+#: admin/views/settings.php:123
+msgid "Custom field mapping"
+msgstr ""
+
+#: admin/views/settings.php:125
+msgid ""
+"Copy WordPress user meta into AutomateFlow custom fields. Three blank rows "
+"are always available."
+msgstr ""
+
+#: admin/views/settings.php:129
+msgid "WordPress user meta key"
+msgstr ""
+
+#: admin/views/settings.php:130
+msgid "AutomateFlow custom field"
+msgstr ""
+
+#: admin/views/settings.php:152
+msgid "Outgoing mail"
+msgstr ""
+
+#: admin/views/settings.php:155
+msgid "From address"
+msgstr ""
+
+#: admin/views/settings.php:158
+msgid ""
+"Must be a verified sender in AutomateFlow, or sends will be rejected. "
+"Defaults to the site admin address."
+msgstr ""
+
+#: admin/views/settings.php:162
+msgid "From name"
+msgstr ""
+
+#: admin/views/settings.php:170
+msgid "WooCommerce"
+msgstr ""
+
+#: admin/views/settings.php:173
+msgid "Customer list"
+msgstr ""
+
+#: admin/views/settings.php:180
+msgid "— Use the default list —"
+msgstr ""
+
+#: admin/views/settings.php:191
+msgid "Require opt-in"
+msgstr ""
+
+#: admin/views/settings.php:195
+msgid ""
+"Only send customer data to AutomateFlow when the customer ticks the "
+"marketing box at checkout"
+msgstr ""
+
+#: admin/views/settings.php:197
+msgid ""
+"Turning this off syncs every customer and fires order automations for all of "
+"them. List membership still requires the tick either way. Check your "
+"obligations before changing it."
+msgstr ""
+
+#: admin/views/settings.php:201
+msgid "Trigger keys"
+msgstr ""
+
+#: admin/views/settings.php:203
+msgid ""
+"Create automations in AutomateFlow with an API-event trigger using these "
+"keys:"
+msgstr ""
+
+#: admin/views/settings.php:215
+msgid "Incoming webhooks"
+msgstr ""
+
+#: admin/views/settings.php:218
+msgid "Endpoint URL"
+msgstr ""
+
+#: admin/views/settings.php:221
+msgid ""
+"Add this as a webhook endpoint in AutomateFlow, then paste the secret it "
+"generates below."
+msgstr ""
+
+#: admin/views/settings.php:225
+msgid "Shared secret"
+msgstr ""
+
+#: admin/views/settings.php:229
+msgid "Until this is set, incoming webhooks are refused rather than trusted."
+msgstr ""
+
+#: admin/views/settings.php:237
+msgid "Maintenance"
+msgstr ""
+
+#: admin/views/settings.php:242
+msgid "Test connection"
+msgstr ""
+
+#: admin/views/settings.php:248
+msgid "Queue all users for sync"
+msgstr ""
+
+#: admin/views/settings.php:254
+msgid "Clear cached forms"
+msgstr ""
+
+#. translators: %s: current PHP version.
+#: automateflow.php:42
+#, php-format
+msgid ""
+"AutomateFlow requires PHP 7.4 or newer. This site runs PHP %s, so the plugin "
+"has not loaded."
+msgstr ""
+
+#: automateflow.php:215
+msgid "Every five minutes (AutomateFlow)"
+msgstr ""
+
+#: includes/class-automateflow-client.php:75
+msgid ""
+"AutomateFlow is not connected. Add your site URL and API key on the settings "
+"screen."
+msgstr ""
+
+#. translators: %s: underlying transport error.
+#: includes/class-automateflow-client.php:112
+#, php-format
+msgid "Could not reach AutomateFlow: %s"
+msgstr ""
+
+#. translators: %s: rate-limit window name, e.g. "per_minute".
+#: includes/class-automateflow-client.php:177
+#, php-format
+msgid "AutomateFlow rate limit reached (%s). The request will be retried."
+msgstr ""
+
+#: includes/class-automateflow-client.php:180
+msgid "AutomateFlow rate limit reached. The request will be retried."
+msgstr ""
+
+#. translators: %s: feature key, e.g. "api_access_enabled".
+#: includes/class-automateflow-client.php:190
+#, php-format
+msgid "Your AutomateFlow plan does not include this capability (%s)."
+msgstr ""
+
+#: includes/class-automateflow-client.php:202
+msgid "AutomateFlow rejected the API key."
+msgstr ""
+
+#. translators: %d: HTTP status code.
+#: includes/class-automateflow-client.php:217
+#, php-format
+msgid "AutomateFlow returned an unexpected response (HTTP %d)."
+msgstr ""
+
+#: includes/class-automateflow-client.php:243
+msgid "AutomateFlow rejected the data as invalid."
+msgstr ""
+
+#. translators: 1: number synced, 2: number still queued.
+#: includes/class-automateflow-contacts.php:172
+#, php-format
+msgid "Synced %1$d contact(s); %2$d still queued."
+msgstr ""
+
+#: includes/class-automateflow-contacts.php:233
+msgid "Contact saved but could not be added to the default list."
+msgstr ""
+
+#: includes/class-automateflow-contacts.php:338
+msgid "Could not unsubscribe the contact for a deleted user."
+msgstr ""
+
+#: includes/class-automateflow-contacts.php:351
+msgid "Subscribe me to the newsletter"
+msgstr ""
+
+#: includes/class-automateflow-forms.php:193
+msgid "No AutomateFlow form was specified."
+msgstr ""
+
+#: includes/class-automateflow-forms.php:202
+msgid "This form is temporarily unavailable."
+msgstr ""
+
+#: includes/class-automateflow-forms.php:234
+msgid "Leave this field empty"
+msgstr ""
+
+#: includes/class-automateflow-forms.php:239
+msgid "Email"
+msgstr ""
+
+#: includes/class-automateflow-forms.php:272
+msgid "Subscribe"
+msgstr ""
+
+#: includes/class-automateflow-forms.php:293
+msgid "That form has expired. Please try again."
+msgstr ""
+
+#: includes/class-automateflow-forms.php:301
+#: includes/class-automateflow-forms.php:333
+msgid "Thanks — please check your inbox to confirm."
+msgstr ""
+
+#: includes/class-automateflow-forms.php:309
+msgid "Please enter a valid email address."
+msgstr ""
+
+#: includes/class-automateflow-forms.php:331
+msgid "We could not complete your subscription. Please try again shortly."
+msgstr ""
+
+#: includes/class-automateflow-mailer.php:136
+msgid "Transactional send failed; handing the message back to WordPress."
+msgstr ""
+
+#: includes/class-automateflow-mailer.php:297
+msgid ""
+"Attachment skipped: the message exceeds the size the transactional API "
+"accepts."
+msgstr ""
+
+#: includes/class-automateflow-webhooks.php:122
+msgid "Webhook rejected: no shared secret is configured."
+msgstr ""
+
+#: includes/class-automateflow-webhooks.php:133
+msgid "Webhook rejected: signature mismatch."
+msgstr ""
+
+#: includes/class-automateflow-webhooks.php:156
+msgid "Webhook received."
+msgstr ""
+
+#: includes/class-automateflow-woocommerce.php:97
+msgid "Email me news and offers"
+msgstr ""
+
+#: includes/class-automateflow-woocommerce.php:202
+msgid "Could not sync a WooCommerce customer."
+msgstr ""
+
+#: includes/class-automateflow-woocommerce.php:222
+msgid "Customer synced but not added to the store list."
+msgstr ""
+
+#: includes/class-automateflow-woocommerce.php:232
+msgid "Order automation trigger failed."
+msgstr ""
+
+#: includes/class-automateflow-woocommerce.php:246
+msgid "Order automation triggered."
+msgstr ""

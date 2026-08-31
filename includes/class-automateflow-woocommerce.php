@@ -33,8 +33,8 @@ defined( 'ABSPATH' ) || exit;
  */
 class AutomateFlow_WooCommerce {
 
-	const OPT_IN_FIELD  = 'automateflow_marketing_opt_in';
-	const CONSENT_META  = '_automateflow_marketing_consent';
+	const OPT_IN_FIELD      = 'automateflow_marketing_opt_in';
+	const CONSENT_META      = '_automateflow_marketing_consent';
 	const TRIGGER_PLACED    = 'woocommerce_order_placed';
 	const TRIGGER_COMPLETED = 'woocommerce_order_completed';
 	const TRIGGER_REFUNDED  = 'woocommerce_order_refunded';

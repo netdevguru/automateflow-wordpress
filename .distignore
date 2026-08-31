@@ -1,0 +1,26 @@
+# Everything here is development scaffolding, not part of the plugin users install.
+# `wp dist-archive` and the wp.org deploy actions read this file.
+
+.git
+.gitattributes
+.gitignore
+.github
+.distignore
+.editorconfig
+
+# Development tooling
+phpcs.xml.dist
+phpcs.xml
+composer.json
+composer.lock
+vendor
+node_modules
+package.json
+package-lock.json
+
+# GitHub-facing docs; wp.org reads readme.txt instead.
+README.md
+
+# wp.org serves screenshots and banners from the SVN /assets directory, not from the
+# plugin ZIP, so anything staged for that must not ship to users.
+.wordpress-org

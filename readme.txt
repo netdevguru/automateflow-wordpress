@@ -1,14 +1,14 @@
 === AutomateFlow ===
-Contributors: automateflow
+Contributors: netdevguru
 Tags: email marketing, newsletter, automation, woocommerce, smtp
 Requires at least: 6.0
-Tested up to: 6.8
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Connect WordPress and WooCommerce to your AutomateFlow workspace: sync contacts, send site email through the transactional API, embed forms, and trigger automations.
+Connect WordPress and WooCommerce to your AutomateFlow workspace: sync contacts, route site email, embed forms, and trigger automations.
 
 == Description ==
 
@@ -41,7 +41,11 @@ This plugin sends data to the AutomateFlow installation whose URL you configure 
 
 No data is transmitted before you enter a URL and an API key and enable a feature.
 
-Because the endpoint is one you configure, its terms and privacy policy are those of the AutomateFlow installation you connect to. For the project itself, see https://github.com/netdevguru/AutomateFlow
+**Terms and privacy policy**
+
+The plugin contacts no service operated by the plugin author. The only host it ever connects to is the AutomateFlow installation whose URL you enter on the settings screen, so the applicable terms and privacy policy are those of that installation — your own, if you self-host it, or your provider's if someone hosts it for you.
+
+AutomateFlow itself is open-source software rather than a hosted product. Its source, licence and documentation are at https://github.com/netdevguru/AutomateFlow and the terms it is distributed under are at https://github.com/netdevguru/AutomateFlow/blob/main/LICENSE
 
 == Installation ==
 

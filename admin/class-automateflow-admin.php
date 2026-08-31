@@ -1,6 +1,6 @@
 <?php
 /**
- * wp-admin screens.
+ * Screens rendered inside wp-admin.
  *
  * @package AutomateFlow
  */
@@ -130,9 +130,11 @@ class AutomateFlow_Admin {
 		);
 	}
 
-	/* --------------------------------------------------------------------- *
+	/*
+	 * ---------------------------------------------------------------------
 	 * Screens
-	 * --------------------------------------------------------------------- */
+	 * ---------------------------------------------------------------------
+	 */
 
 	/**
 	 * Settings screen.
@@ -196,9 +198,11 @@ class AutomateFlow_Admin {
 		require AUTOMATEFLOW_PLUGIN_DIR . 'admin/views/log.php';
 	}
 
-	/* --------------------------------------------------------------------- *
+	/*
+	 * ---------------------------------------------------------------------
 	 * Actions
-	 * --------------------------------------------------------------------- */
+	 * ---------------------------------------------------------------------
+	 */
 
 	/**
 	 * Persist the settings form.
@@ -269,27 +273,38 @@ class AutomateFlow_Admin {
 			isset( $_POST['mail_from_name'] ) ? sanitize_text_field( wp_unslash( $_POST['mail_from_name'] ) ) : ''
 		);
 
-		update_option( AutomateFlow_Settings::OPT_FIELD_MAP, $this->parse_field_map() );
+		// Read here rather than inside parse_field_map(): this is the scope that ran
+		// check_admin_referer(), so the nonce guarantee sits where the superglobal is actually
+		// touched instead of resting on a comment one call away.
+		$map_keys = isset( $_POST['map_meta_key'] ) && is_array( $_POST['map_meta_key'] )
+			? array_map( 'sanitize_key', wp_unslash( $_POST['map_meta_key'] ) )
+			: array();
+
+		$map_names = isset( $_POST['map_field_name'] ) && is_array( $_POST['map_field_name'] )
+			? array_map( 'sanitize_key', wp_unslash( $_POST['map_field_name'] ) )
+			: array();
+
+		update_option( AutomateFlow_Settings::OPT_FIELD_MAP, $this->parse_field_map( $map_keys, $map_names ) );
 
 		$this->redirect_back( 'saved' );
 	}
 
 	/**
-	 * Read the repeatable field-map rows.
+	 * Pair up the repeatable field-map rows.
 	 *
+	 * Takes the two submitted columns rather than reading them itself, so this stays a pure
+	 * function of its arguments: rows are matched by index, and a row missing either half is
+	 * dropped rather than stored as a half-mapping the sync would have to guess about.
+	 *
+	 * @param string[] $keys  Sanitised WP user meta keys.
+	 * @param string[] $names Sanitised AutomateFlow custom field names, index-aligned.
 	 * @return array<string, string>
 	 */
-	private function parse_field_map() {
+	private function parse_field_map( array $keys, array $names ) {
 		$map = array();
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- check_admin_referer runs in the caller.
-		$keys = isset( $_POST['map_meta_key'] ) && is_array( $_POST['map_meta_key'] ) ? wp_unslash( $_POST['map_meta_key'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$names = isset( $_POST['map_field_name'] ) && is_array( $_POST['map_field_name'] ) ? wp_unslash( $_POST['map_field_name'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-
 		foreach ( $keys as $index => $meta_key ) {
-			$meta_key = sanitize_key( $meta_key );
-			$name     = isset( $names[ $index ] ) ? sanitize_key( $names[ $index ] ) : '';
+			$name = isset( $names[ $index ] ) ? $names[ $index ] : '';
 
 			if ( '' !== $meta_key && '' !== $name ) {
 				$map[ $meta_key ] = $name;
@@ -383,9 +398,11 @@ class AutomateFlow_Admin {
 		$this->redirect_campaigns( 'sending' );
 	}
 
-	/* --------------------------------------------------------------------- *
+	/*
+	 * ---------------------------------------------------------------------
 	 * Helpers
-	 * --------------------------------------------------------------------- */
+	 * ---------------------------------------------------------------------
+	 */
 
 	/**
 	 * Capability gate.
@@ -423,8 +440,8 @@ class AutomateFlow_Admin {
 	 */
 	private function redirect_back( $status, $detail = '' ) {
 		$args = array(
-			'page'                 => self::MENU_SLUG,
-			'automateflow_status'  => $status,
+			'page'                => self::MENU_SLUG,
+			'automateflow_status' => $status,
 		);
 
 		if ( '' !== $detail ) {
@@ -471,10 +488,10 @@ class AutomateFlow_Admin {
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		$messages = array(
-			'saved'    => array( 'success', __( 'Settings saved.', 'automateflow' ) ),
-			'test_ok'  => array( 'success', __( 'Connected to AutomateFlow successfully.', 'automateflow' ) ),
-			'flushed'  => array( 'success', __( 'Cached form definitions cleared.', 'automateflow' ) ),
-			'sending'  => array( 'success', __( 'Campaign send started.', 'automateflow' ) ),
+			'saved'   => array( 'success', __( 'Settings saved.', 'automateflow' ) ),
+			'test_ok' => array( 'success', __( 'Connected to AutomateFlow successfully.', 'automateflow' ) ),
+			'flushed' => array( 'success', __( 'Cached form definitions cleared.', 'automateflow' ) ),
+			'sending' => array( 'success', __( 'Campaign send started.', 'automateflow' ) ),
 		);
 
 		if ( isset( $messages[ $status ] ) ) {

@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<ruleset name="AutomateFlow">
+	<description>Coding standards for the AutomateFlow WordPress plugin.</description>
+
+	<file>.</file>
+
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/languages/*</exclude-pattern>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="ps"/>
+
+	<rule ref="WordPress-Extra"/>
+	<rule ref="WordPress-Docs"/>
+
+	<!--
+		Text domain and prefix enforcement: everything the plugin declares must carry the
+		slug, so a stray `__()` against another domain or an unprefixed global is an error
+		rather than something a reviewer has to notice by eye.
+	-->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="automateflow"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="automateflow"/>
+				<element value="AutomateFlow"/>
+				<element value="AUTOMATEFLOW"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		The view files are `require`d from inside AutomateFlow_Admin's render methods, so the
+		variables they declare are method-scoped, not global — the sniff cannot see the
+		enclosing scope and reports every one of them. They already carry an `af_` prefix to
+		keep them distinct from the variables the including method owns.
+	-->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound">
+		<exclude-pattern>admin/views/*</exclude-pattern>
+	</rule>
+
+	<!--
+		The main plugin file must be named after the plugin slug for WordPress to find it, so
+		it cannot also follow the `class-*.php` convention or keep its bootstrap function in a
+		separate file. Both exclusions are scoped to that one file rather than the tree.
+	-->
+	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
+		<exclude-pattern>automateflow.php</exclude-pattern>
+	</rule>
+	<rule ref="Universal.Files.SeparateFunctionsFromOO.Mixed">
+		<exclude-pattern>automateflow.php</exclude-pattern>
+	</rule>
+
+	<!--
+		The sync queue drains on a five-minute schedule, below the sniff's 15-minute advisory
+		threshold. That is deliberate and documented in readme.txt: the API is rate limited
+		per key, so the queue is drained in small bounded batches and a slower cadence would
+		leave a bulk sync visibly stalled. The wake-up itself is a single option read when the
+		queue is empty.
+	-->
+	<rule ref="WordPress.WP.CronInterval.CronSchedulesInterval">
+		<exclude-pattern>automateflow.php</exclude-pattern>
+	</rule>
+
+	<config name="minimum_wp_version" value="6.0"/>
+	<config name="testVersion" value="7.4-"/>
+</ruleset>

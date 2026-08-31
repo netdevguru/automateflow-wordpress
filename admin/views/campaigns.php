@@ -66,8 +66,15 @@ $af_sendable = array( 'draft', 'scheduled' );
 			<tbody>
 				<?php foreach ( $campaigns as $af_campaign ) : ?>
 					<?php
-					$af_id     = isset( $af_campaign['id'] ) ? absint( $af_campaign['id'] ) : 0;
-					$af_status = isset( $af_campaign['status'] ) ? (string) $af_campaign['status'] : '';
+					$af_id        = isset( $af_campaign['id'] ) ? absint( $af_campaign['id'] ) : 0;
+					$af_status    = isset( $af_campaign['status'] ) ? (string) $af_campaign['status'] : '';
+					$af_stats_url = add_query_arg(
+						array(
+							'page'     => 'automateflow-campaigns',
+							'campaign' => $af_id,
+						),
+						admin_url( 'admin.php' )
+					);
 					?>
 					<tr class="<?php echo esc_attr( $af_id === $stats_for ? 'automateflow-row--active' : '' ); ?>">
 						<td><strong><?php echo esc_html( isset( $af_campaign['name'] ) ? (string) $af_campaign['name'] : '—' ); ?></strong></td>
@@ -79,7 +86,7 @@ $af_sendable = array( 'draft', 'scheduled' );
 						</td>
 						<td><?php echo esc_html( number_format_i18n( isset( $af_campaign['sends_count'] ) ? (int) $af_campaign['sends_count'] : 0 ) ); ?></td>
 						<td class="automateflow-row-actions">
-							<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'automateflow-campaigns', 'campaign' => $af_id ), admin_url( 'admin.php' ) ) ); ?>">
+							<a href="<?php echo esc_url( $af_stats_url ); ?>">
 								<?php esc_html_e( 'Stats', 'automateflow' ); ?>
 							</a>
 
