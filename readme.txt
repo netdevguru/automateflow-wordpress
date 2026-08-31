@@ -83,9 +83,10 @@ Yes. The integration reads orders through the WooCommerce CRUD API and declares 
 
 == Screenshots ==
 
-1. The settings screen, with per-feature switches and connection testing.
-2. The campaign browser, showing status and delivery counts.
-3. The activity log.
+1. Connection settings and the feature switches. Every feature is off until you turn it on.
+2. Contact sync: which roles are eligible, and any user meta field mapped to an AutomateFlow custom field.
+3. Outgoing mail, the incoming webhook endpoint, and the maintenance actions.
+4. The activity log, which records outcomes only — never payloads.
 
 == Changelog ==
 

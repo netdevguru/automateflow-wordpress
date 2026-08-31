@@ -43,7 +43,7 @@ defined( 'ABSPATH' ) || exit;
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ( $entries as $af_entry ) : ?>
+				<?php foreach ( $entries as $automateflow_entry ) : ?>
 					<tr>
 						<td>
 							<?php
@@ -51,28 +51,28 @@ defined( 'ABSPATH' ) || exit;
 								sprintf(
 									/* translators: %s: human-readable interval, e.g. "5 mins". */
 									__( '%s ago', 'automateflow' ),
-									human_time_diff( (int) $af_entry['time'] )
+									human_time_diff( (int) $automateflow_entry['time'] )
 								)
 							);
 							?>
 						</td>
 						<td>
-							<span class="automateflow-level automateflow-level--<?php echo esc_attr( sanitize_html_class( (string) $af_entry['level'] ) ); ?>">
-								<?php echo esc_html( (string) $af_entry['level'] ); ?>
+							<span class="automateflow-level automateflow-level--<?php echo esc_attr( sanitize_html_class( (string) $automateflow_entry['level'] ) ); ?>">
+								<?php echo esc_html( (string) $automateflow_entry['level'] ); ?>
 							</span>
 						</td>
-						<td><?php echo esc_html( (string) $af_entry['message'] ); ?></td>
+						<td><?php echo esc_html( (string) $automateflow_entry['message'] ); ?></td>
 						<td>
-							<?php if ( ! empty( $af_entry['context'] ) && is_array( $af_entry['context'] ) ) : ?>
+							<?php if ( ! empty( $automateflow_entry['context'] ) && is_array( $automateflow_entry['context'] ) ) : ?>
 								<?php
-								$af_pairs = array();
+								$automateflow_pairs = array();
 
-								foreach ( $af_entry['context'] as $af_key => $af_value ) {
-									$af_pairs[] = $af_key . '=' . $af_value;
+								foreach ( $automateflow_entry['context'] as $automateflow_key => $automateflow_value ) {
+									$automateflow_pairs[] = $automateflow_key . '=' . $automateflow_value;
 								}
 
 								?>
-								<code><?php echo esc_html( implode( ' ', $af_pairs ) ); ?></code>
+								<code><?php echo esc_html( implode( ' ', $automateflow_pairs ) ); ?></code>
 							<?php else : ?>
 								—
 							<?php endif; ?>

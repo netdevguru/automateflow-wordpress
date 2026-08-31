@@ -210,9 +210,26 @@ register_deactivation_hook(
 add_filter(
 	'cron_schedules', // phpcs:ignore WordPress.WP.CronInterval.ChangeDetected -- Five minutes is well above the 10-minute warning threshold's intent; see docblock.
 	static function ( $schedules ) {
+		/*
+		 * `display` is translated only once `init` has fired.
+		 *
+		 * `wp_get_schedules()` is routinely called before `init` — WooCommerce's own
+		 * WC_Install::cron_schedules does it, and so does any plugin checking its schedules on
+		 * `plugins_loaded`. Calling __() there forces WordPress to load this text domain
+		 * just-in-time, which since 6.7 emits a "translation loading was triggered too early"
+		 * notice naming this plugin.
+		 *
+		 * The filter runs afresh on every wp_get_schedules() call and nothing caches the
+		 * result, so every context that shows this label to a human — Tools screens, cron
+		 * inspectors, WP-Cron's own listings — runs long after `init` and gets the translated
+		 * string. Only the pre-init machine callers see the English fallback, and they are
+		 * reading `interval`, not `display`.
+		 */
 		$schedules['automateflow_five_minutes'] = array(
 			'interval' => 5 * MINUTE_IN_SECONDS,
-			'display'  => __( 'Every five minutes (AutomateFlow)', 'automateflow' ),
+			'display'  => did_action( 'init' )
+				? __( 'Every five minutes (AutomateFlow)', 'automateflow' )
+				: 'Every five minutes (AutomateFlow)',
 		);
 
 		return $schedules;

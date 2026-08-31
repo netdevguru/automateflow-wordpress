@@ -11,10 +11,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$af_features   = $settings->features();
-$af_field_map  = $settings->field_map();
-$af_sync_roles = $settings->sync_roles();
-$af_last_error = $settings->last_error();
+$automateflow_features   = $settings->features();
+$automateflow_field_map  = $settings->field_map();
+$automateflow_sync_roles = $settings->sync_roles();
+$automateflow_last_error = $settings->last_error();
 ?>
 <div class="wrap automateflow-settings">
 	<h1><?php esc_html_e( 'AutomateFlow', 'automateflow' ); ?></h1>
@@ -25,12 +25,12 @@ $af_last_error = $settings->last_error();
 		</div>
 	<?php endif; ?>
 
-	<?php if ( null !== $af_last_error ) : ?>
+	<?php if ( null !== $automateflow_last_error ) : ?>
 		<div class="notice notice-warning">
 			<p>
 				<strong><?php esc_html_e( 'Last API error:', 'automateflow' ); ?></strong>
-				<?php echo esc_html( $af_last_error['message'] ); ?>
-				<em>(<?php echo esc_html( human_time_diff( $af_last_error['time'] ) ); ?> <?php esc_html_e( 'ago', 'automateflow' ); ?>)</em>
+				<?php echo esc_html( $automateflow_last_error['message'] ); ?>
+				<em>(<?php echo esc_html( human_time_diff( $automateflow_last_error['time'] ) ); ?> <?php esc_html_e( 'ago', 'automateflow' ); ?>)</em>
 			</p>
 		</div>
 	<?php endif; ?>
@@ -64,18 +64,18 @@ $af_last_error = $settings->last_error();
 		<h2 class="title"><?php esc_html_e( 'Features', 'automateflow' ); ?></h2>
 		<p class="description"><?php esc_html_e( 'Everything is off until you switch it on. Nothing leaves this site while a feature is disabled.', 'automateflow' ); ?></p>
 		<table class="form-table" role="presentation">
-			<?php foreach ( AutomateFlow_Settings::FEATURES as $af_key => $af_label ) : ?>
+			<?php foreach ( AutomateFlow_Settings::FEATURES as $automateflow_key => $automateflow_label ) : ?>
 				<tr>
-					<th scope="row"><?php echo esc_html( $af_label ); ?></th>
+					<th scope="row"><?php echo esc_html( $automateflow_label ); ?></th>
 					<td>
 						<label>
-							<input type="checkbox" name="features[<?php echo esc_attr( $af_key ); ?>]" value="1"
-								<?php checked( ! empty( $af_features[ $af_key ] ) ); ?> />
+							<input type="checkbox" name="features[<?php echo esc_attr( $automateflow_key ); ?>]" value="1"
+								<?php checked( ! empty( $automateflow_features[ $automateflow_key ] ) ); ?> />
 							<?php esc_html_e( 'Enabled', 'automateflow' ); ?>
 						</label>
-						<?php if ( 'woocommerce' === $af_key && ! class_exists( 'WooCommerce' ) ) : ?>
+						<?php if ( 'woocommerce' === $automateflow_key && ! class_exists( 'WooCommerce' ) ) : ?>
 							<p class="description"><?php esc_html_e( 'WooCommerce is not active on this site, so this has no effect.', 'automateflow' ); ?></p>
-						<?php elseif ( 'mailer' === $af_key ) : ?>
+						<?php elseif ( 'mailer' === $automateflow_key ) : ?>
 							<p class="description"><?php esc_html_e( 'Replaces the site\'s outgoing mail transport. If a send fails, the message falls back to the WordPress default rather than being dropped.', 'automateflow' ); ?></p>
 						<?php endif; ?>
 					</td>
@@ -94,9 +94,9 @@ $af_last_error = $settings->last_error();
 					<?php else : ?>
 						<select id="af-default-list" name="default_list_id">
 							<option value="0"><?php esc_html_e( '— None —', 'automateflow' ); ?></option>
-							<?php foreach ( $lists as $af_list ) : ?>
-								<option value="<?php echo esc_attr( (string) $af_list['id'] ); ?>" <?php selected( $settings->default_list_id(), (int) $af_list['id'] ); ?>>
-									<?php echo esc_html( (string) $af_list['name'] ); ?>
+							<?php foreach ( $lists as $automateflow_list ) : ?>
+								<option value="<?php echo esc_attr( (string) $automateflow_list['id'] ); ?>" <?php selected( $settings->default_list_id(), (int) $automateflow_list['id'] ); ?>>
+									<?php echo esc_html( (string) $automateflow_list['name'] ); ?>
 								</option>
 							<?php endforeach; ?>
 						</select>
@@ -108,11 +108,11 @@ $af_last_error = $settings->last_error();
 				<td>
 					<fieldset>
 						<legend class="screen-reader-text"><?php esc_html_e( 'Roles to sync', 'automateflow' ); ?></legend>
-						<?php foreach ( $roles as $af_role_slug => $af_role_name ) : ?>
+						<?php foreach ( $roles as $automateflow_role_slug => $automateflow_role_name ) : ?>
 							<label style="display:inline-block;min-width:12em;">
-								<input type="checkbox" name="sync_roles[]" value="<?php echo esc_attr( $af_role_slug ); ?>"
-									<?php checked( in_array( $af_role_slug, $af_sync_roles, true ) ); ?> />
-								<?php echo esc_html( $af_role_name ); ?>
+								<input type="checkbox" name="sync_roles[]" value="<?php echo esc_attr( $automateflow_role_slug ); ?>"
+									<?php checked( in_array( $automateflow_role_slug, $automateflow_sync_roles, true ) ); ?> />
+								<?php echo esc_html( $automateflow_role_name ); ?>
 							</label>
 						<?php endforeach; ?>
 					</fieldset>
@@ -131,13 +131,13 @@ $af_last_error = $settings->last_error();
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ( $af_field_map as $af_meta => $af_field ) : ?>
+							<?php foreach ( $automateflow_field_map as $automateflow_meta => $automateflow_field ) : ?>
 								<tr>
-									<td><input type="text" class="code" name="map_meta_key[]" value="<?php echo esc_attr( $af_meta ); ?>" /></td>
-									<td><input type="text" class="code" name="map_field_name[]" value="<?php echo esc_attr( $af_field ); ?>" /></td>
+									<td><input type="text" class="code" name="map_meta_key[]" value="<?php echo esc_attr( $automateflow_meta ); ?>" /></td>
+									<td><input type="text" class="code" name="map_field_name[]" value="<?php echo esc_attr( $automateflow_field ); ?>" /></td>
 								</tr>
 							<?php endforeach; ?>
-							<?php for ( $af_i = 0; $af_i < 3; $af_i++ ) : ?>
+							<?php for ( $automateflow_i = 0; $automateflow_i < 3; $automateflow_i++ ) : ?>
 								<tr>
 									<td><input type="text" class="code" name="map_meta_key[]" value="" placeholder="billing_phone" /></td>
 									<td><input type="text" class="code" name="map_field_name[]" value="" placeholder="phone" /></td>
@@ -167,6 +167,17 @@ $af_last_error = $settings->last_error();
 		</table>
 
 		<?php if ( class_exists( 'WooCommerce' ) ) : ?>
+			<?php
+			/*
+			 * Marks this section as present in the submission. The whole WooCommerce block is
+			 * conditional on WooCommerce being active, so without this flag the handler cannot
+			 * tell "the admin unticked Require opt-in" from "the controls were never on the
+			 * page" — and an unticked checkbox and an absent one look identical in $_POST.
+			 * Saving from a site with no WooCommerce would then silently clear the opt-in
+			 * requirement.
+			 */
+			?>
+			<input type="hidden" name="woo_settings_rendered" value="1" />
 			<h2 class="title"><?php esc_html_e( 'WooCommerce', 'automateflow' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tr>
@@ -178,9 +189,9 @@ $af_last_error = $settings->last_error();
 						<?php else : ?>
 							<select id="af-woo-list" name="woo_list_id">
 								<option value="0"><?php esc_html_e( '— Use the default list —', 'automateflow' ); ?></option>
-								<?php foreach ( $lists as $af_list ) : ?>
-									<option value="<?php echo esc_attr( (string) $af_list['id'] ); ?>" <?php selected( (int) get_option( AutomateFlow_Settings::OPT_WOO_LIST, 0 ), (int) $af_list['id'] ); ?>>
-										<?php echo esc_html( (string) $af_list['name'] ); ?>
+								<?php foreach ( $lists as $automateflow_list ) : ?>
+									<option value="<?php echo esc_attr( (string) $automateflow_list['id'] ); ?>" <?php selected( (int) get_option( AutomateFlow_Settings::OPT_WOO_LIST, 0 ), (int) $automateflow_list['id'] ); ?>>
+										<?php echo esc_html( (string) $automateflow_list['name'] ); ?>
 									</option>
 								<?php endforeach; ?>
 							</select>

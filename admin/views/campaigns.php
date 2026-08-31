@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
  * Rendering the button for a campaign that cannot accept it would be an error the
  * admin only discovers by clicking.
  */
-$af_sendable = array( 'draft', 'scheduled' );
+$automateflow_sendable = array( 'draft', 'scheduled' );
 ?>
 <div class="wrap automateflow-campaigns">
 	<h1><?php esc_html_e( 'AutomateFlow Campaigns', 'automateflow' ); ?></h1>
@@ -64,37 +64,37 @@ $af_sendable = array( 'draft', 'scheduled' );
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ( $campaigns as $af_campaign ) : ?>
+				<?php foreach ( $campaigns as $automateflow_campaign ) : ?>
 					<?php
-					$af_id        = isset( $af_campaign['id'] ) ? absint( $af_campaign['id'] ) : 0;
-					$af_status    = isset( $af_campaign['status'] ) ? (string) $af_campaign['status'] : '';
-					$af_stats_url = add_query_arg(
+					$automateflow_id        = isset( $automateflow_campaign['id'] ) ? absint( $automateflow_campaign['id'] ) : 0;
+					$automateflow_status    = isset( $automateflow_campaign['status'] ) ? (string) $automateflow_campaign['status'] : '';
+					$automateflow_stats_url = add_query_arg(
 						array(
 							'page'     => 'automateflow-campaigns',
-							'campaign' => $af_id,
+							'campaign' => $automateflow_id,
 						),
 						admin_url( 'admin.php' )
 					);
 					?>
-					<tr class="<?php echo esc_attr( $af_id === $stats_for ? 'automateflow-row--active' : '' ); ?>">
-						<td><strong><?php echo esc_html( isset( $af_campaign['name'] ) ? (string) $af_campaign['name'] : '—' ); ?></strong></td>
-						<td><?php echo esc_html( isset( $af_campaign['subject'] ) && '' !== $af_campaign['subject'] ? (string) $af_campaign['subject'] : '—' ); ?></td>
+					<tr class="<?php echo esc_attr( $automateflow_id === $stats_for ? 'automateflow-row--active' : '' ); ?>">
+						<td><strong><?php echo esc_html( isset( $automateflow_campaign['name'] ) ? (string) $automateflow_campaign['name'] : '—' ); ?></strong></td>
+						<td><?php echo esc_html( isset( $automateflow_campaign['subject'] ) && '' !== $automateflow_campaign['subject'] ? (string) $automateflow_campaign['subject'] : '—' ); ?></td>
 						<td>
-							<span class="automateflow-status automateflow-status--<?php echo esc_attr( sanitize_html_class( $af_status ) ); ?>">
-								<?php echo esc_html( $af_status ); ?>
+							<span class="automateflow-status automateflow-status--<?php echo esc_attr( sanitize_html_class( $automateflow_status ) ); ?>">
+								<?php echo esc_html( $automateflow_status ); ?>
 							</span>
 						</td>
-						<td><?php echo esc_html( number_format_i18n( isset( $af_campaign['sends_count'] ) ? (int) $af_campaign['sends_count'] : 0 ) ); ?></td>
+						<td><?php echo esc_html( number_format_i18n( isset( $automateflow_campaign['sends_count'] ) ? (int) $automateflow_campaign['sends_count'] : 0 ) ); ?></td>
 						<td class="automateflow-row-actions">
-							<a href="<?php echo esc_url( $af_stats_url ); ?>">
+							<a href="<?php echo esc_url( $automateflow_stats_url ); ?>">
 								<?php esc_html_e( 'Stats', 'automateflow' ); ?>
 							</a>
 
-							<?php if ( in_array( $af_status, $af_sendable, true ) ) : ?>
+							<?php if ( in_array( $automateflow_status, $automateflow_sendable, true ) ) : ?>
 								<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="automateflow-inline-form">
 									<input type="hidden" name="action" value="<?php echo esc_attr( AutomateFlow_Admin::SEND ); ?>" />
-									<input type="hidden" name="campaign_id" value="<?php echo esc_attr( (string) $af_id ); ?>" />
-									<?php wp_nonce_field( AutomateFlow_Admin::SEND . '_' . $af_id ); ?>
+									<input type="hidden" name="campaign_id" value="<?php echo esc_attr( (string) $automateflow_id ); ?>" />
+									<?php wp_nonce_field( AutomateFlow_Admin::SEND . '_' . $automateflow_id ); ?>
 									<button type="submit" class="button button-small"
 										onclick="return confirm(<?php echo esc_attr( wp_json_encode( __( 'Start sending this campaign now? This cannot be undone.', 'automateflow' ) ) ); ?>);">
 										<?php esc_html_e( 'Send now', 'automateflow' ); ?>

@@ -237,15 +237,24 @@ class AutomateFlow_Admin {
 			isset( $_POST['default_list_id'] ) ? absint( wp_unslash( $_POST['default_list_id'] ) ) : 0
 		);
 
-		update_option(
-			AutomateFlow_Settings::OPT_WOO_LIST,
-			isset( $_POST['woo_list_id'] ) ? absint( wp_unslash( $_POST['woo_list_id'] ) ) : 0
-		);
+		// Only touch the WooCommerce options when the form actually carried that section.
+		// It is rendered only while WooCommerce is active, and an unticked checkbox is absent
+		// from $_POST exactly like a checkbox that was never on the page — so writing these
+		// unconditionally meant an admin saving settings on a site without WooCommerce
+		// silently cleared "Require opt-in". The next time WooCommerce was installed and the
+		// integration switched on, every customer would sync whether or not they had ticked
+		// the marketing box, which is the opposite of what readme.txt promises.
+		if ( ! empty( $_POST['woo_settings_rendered'] ) ) {
+			update_option(
+				AutomateFlow_Settings::OPT_WOO_LIST,
+				isset( $_POST['woo_list_id'] ) ? absint( wp_unslash( $_POST['woo_list_id'] ) ) : 0
+			);
 
-		update_option(
-			AutomateFlow_Settings::OPT_WOO_CONSENT,
-			empty( $_POST['woo_require_consent'] ) ? '0' : '1'
-		);
+			update_option(
+				AutomateFlow_Settings::OPT_WOO_CONSENT,
+				empty( $_POST['woo_require_consent'] ) ? '0' : '1'
+			);
+		}
 
 		$roles = array();
 
@@ -482,9 +491,19 @@ class AutomateFlow_Admin {
 		}
 
 		$status = sanitize_key( wp_unslash( $_GET['automateflow_status'] ) );
-		$detail = isset( $_GET['automateflow_detail'] )
-			? sanitize_text_field( rawurldecode( wp_unslash( $_GET['automateflow_detail'] ) ) )
-			: '';
+		// Sanitised twice on purpose, not by accident. The inner call sanitises the raw input
+		// at the boundary; rawurldecode() then undoes the rawurlencode() applied when the
+		// redirect was built, and decoding can reintroduce characters the first pass removed,
+		// so the result is sanitised again. Decoding *after* a single sanitise would be the
+		// unsafe ordering, and a sanitiser that is not applied directly to the superglobal is
+		// invisible to static analysis — which is why the one-liner tripped Plugin Check.
+		$detail = '';
+
+		if ( isset( $_GET['automateflow_detail'] ) ) {
+			$detail = sanitize_text_field(
+				rawurldecode( sanitize_text_field( wp_unslash( $_GET['automateflow_detail'] ) ) )
+			);
+		}
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		$messages = array(

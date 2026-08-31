@@ -39,16 +39,6 @@
 	</rule>
 
 	<!--
-		The view files are `require`d from inside AutomateFlow_Admin's render methods, so the
-		variables they declare are method-scoped, not global — the sniff cannot see the
-		enclosing scope and reports every one of them. They already carry an `af_` prefix to
-		keep them distinct from the variables the including method owns.
-	-->
-	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound">
-		<exclude-pattern>admin/views/*</exclude-pattern>
-	</rule>
-
-	<!--
 		The main plugin file must be named after the plugin slug for WordPress to find it, so
 		it cannot also follow the `class-*.php` convention or keep its bootstrap function in a
 		separate file. Both exclusions are scoped to that one file rather than the tree.

@@ -1,26 +1,46 @@
 # WordPress.org listing assets
 
-Nothing in this directory ships to users. WordPress.org serves the plugin listing's
-images from the `assets/` directory at the **root of the SVN repository** — a sibling of
-`trunk/` and `tags/`, not a folder inside the plugin — so these files are staged here and
-copied to `svn/assets/` at deploy time. `.distignore` keeps the whole directory out of the
-plugin ZIP.
+Nothing in this directory ships to users. WordPress.org serves the plugin listing's images
+from the `assets/` directory at the **root of the SVN repository** — a sibling of `trunk/`
+and `tags/`, not a folder inside the plugin — so these files are staged here and copied to
+`svn/assets/` at deploy time. `.distignore` keeps the whole directory out of the plugin ZIP.
 
-## Screenshots — required for the three entries in `readme.txt`
+## Current set
 
-`readme.txt` has a `== Screenshots ==` section listing three images. The captions are
-matched to files by number, so a missing file leaves a numbered caption with nothing under
-it on the listing page. Capture these at a 2:1-ish aspect ratio, 1280px wide or more, and
-crop to the panel rather than the whole browser:
+Four screenshots, matching the four numbered captions in `readme.txt`. The listing pairs
+them by number, so the count here and the caption count there must stay equal.
 
-| File               | Caption in readme.txt                                          |
-|--------------------|----------------------------------------------------------------|
-| `screenshot-1.png` | The settings screen, with per-feature switches and connection testing. |
-| `screenshot-2.png` | The campaign browser, showing status and delivery counts.      |
-| `screenshot-3.png` | The activity log.                                              |
+| File               | Caption |
+|--------------------|---------|
+| `screenshot-1.png` | Connection settings and the feature switches. |
+| `screenshot-2.png` | Contact sync: roles and custom field mapping. |
+| `screenshot-3.png` | Outgoing mail, webhook endpoint, maintenance actions. |
+| `screenshot-4.png` | The activity log. |
 
-Use a workspace with placeholder data. A real API key must not be visible — the settings
-screen renders the key field as an empty placeholder, so it is safe to shoot as-is.
+All four are cropped 48px shorter than the captures in `source/`. That trim removes the
+browser's rounded window corner, which showed as a black wedge against the page, and on one
+of them a macOS screenshot-preview thumbnail that had drifted into frame.
+
+`source/` holds the six original captures untouched, so any of this can be redone without
+recapturing.
+
+## Not used, and why
+
+* `source/screenshot-3.png` — near-duplicate of the outgoing-mail view already used.
+* `source/screenshot-6.png` — the campaign browser showing only "Could not reach
+  AutomateFlow: cURL error 6". Accurate for a site with no connection, but on a listing page
+  it reads as a broken plugin.
+
+## Still worth adding
+
+**The campaign browser.** It is a headline feature with no screenshot, and it is the one
+screen that cannot be captured without a reachable AutomateFlow install holding real
+campaigns. Capture it with a live connection, add it as `screenshot-5.png`, and add a fifth
+caption to `readme.txt` describing status and delivery counts.
+
+The activity log shot currently shows a single WARNING row from a failed sync against an
+unreachable host. It is honest, but a log with a mix of info and warning rows would represent
+normal operation better.
 
 ## Optional but recommended
 
