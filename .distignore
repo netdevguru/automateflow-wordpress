@@ -18,8 +18,10 @@ node_modules
 package.json
 package-lock.json
 
-# GitHub-facing docs; wp.org reads readme.txt instead.
-README.md
+# GitHub-facing docs and working notes; wp.org reads readme.txt instead, which is not
+# matched by this pattern because it is lowercase .txt. Anything else ending in .md is
+# development scaffolding — Plugin Check reports, review notes — and must not ship.
+*.md
 
 # wp.org serves screenshots and banners from the SVN /assets directory, not from the
 # plugin ZIP, so anything staged for that must not ship to users.

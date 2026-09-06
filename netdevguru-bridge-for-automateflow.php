@@ -155,7 +155,7 @@ final class Netdevguru_Bridge_Plugin {
  *
  * @return Netdevguru_Bridge_Plugin
  */
-function automateflow() {
+function netdevguru_bridge() {
 	return Netdevguru_Bridge_Plugin::instance();
 }
 
@@ -179,7 +179,7 @@ add_action(
 add_action(
 	'plugins_loaded',
 	static function () {
-		automateflow()->boot();
+		netdevguru_bridge()->boot();
 	}
 );
 
