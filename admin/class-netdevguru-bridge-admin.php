@@ -2,7 +2,7 @@
 /**
  * Screens rendered inside wp-admin.
  *
- * @package AutomateFlow
+ * @package Netdevguru_Bridge_For_AutomateFlow
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -15,38 +15,38 @@ defined( 'ABSPATH' ) || exit;
  * settings at all — test the connection, queue a full user sync, drop the form cache — and
  * splitting those across two mechanisms would mean two permission models to keep in step.
  */
-class AutomateFlow_Admin {
+class Netdevguru_Bridge_Admin {
 
 	const CAPABILITY = 'manage_options';
-	const MENU_SLUG  = 'automateflow';
-	const SAVE       = 'automateflow_save_settings';
-	const TEST       = 'automateflow_test_connection';
-	const SYNC_ALL   = 'automateflow_sync_all_users';
-	const FLUSH      = 'automateflow_flush_cache';
-	const CLEAR_LOG  = 'automateflow_clear_log';
-	const SEND       = 'automateflow_send_campaign';
+	const MENU_SLUG  = 'netdevguru-bridge-for-automateflow';
+	const SAVE       = 'netdevguru_bridge_save_settings';
+	const TEST       = 'netdevguru_bridge_test_connection';
+	const SYNC_ALL   = 'netdevguru_bridge_sync_all_users';
+	const FLUSH      = 'netdevguru_bridge_flush_cache';
+	const CLEAR_LOG  = 'netdevguru_bridge_clear_log';
+	const SEND       = 'netdevguru_bridge_send_campaign';
 
 	/**
 	 * API client.
 	 *
-	 * @var AutomateFlow_Client
+	 * @var Netdevguru_Bridge_Client
 	 */
 	private $client;
 
 	/**
 	 * Settings repository.
 	 *
-	 * @var AutomateFlow_Settings
+	 * @var Netdevguru_Bridge_Settings
 	 */
 	private $settings;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param AutomateFlow_Client   $client   API client.
-	 * @param AutomateFlow_Settings $settings Settings repository.
+	 * @param Netdevguru_Bridge_Client   $client   API client.
+	 * @param Netdevguru_Bridge_Settings $settings Settings repository.
 	 */
-	public function __construct( AutomateFlow_Client $client, AutomateFlow_Settings $settings ) {
+	public function __construct( Netdevguru_Bridge_Client $client, Netdevguru_Bridge_Settings $settings ) {
 		$this->client   = $client;
 		$this->settings = $settings;
 	}
@@ -72,9 +72,13 @@ class AutomateFlow_Admin {
 	 * Menu entries.
 	 */
 	public function register_menu() {
+		// The plugin's own identity, not the platform's. A top-level menu labelled plainly
+		// "AutomateFlow" reads as though this *is* the service rather than a connector to it,
+		// which is the affiliation problem the rename exists to fix. The short form is used for
+		// the sidebar, where the full name would wrap.
 		add_menu_page(
-			__( 'AutomateFlow', 'automateflow' ),
-			__( 'AutomateFlow', 'automateflow' ),
+			__( 'netdevguru Bridge for AutomateFlow', 'netdevguru-bridge-for-automateflow' ),
+			__( 'netdevguru Bridge', 'netdevguru-bridge-for-automateflow' ),
 			self::CAPABILITY,
 			self::MENU_SLUG,
 			array( $this, 'render_settings_page' ),
@@ -84,8 +88,8 @@ class AutomateFlow_Admin {
 
 		add_submenu_page(
 			self::MENU_SLUG,
-			__( 'Settings', 'automateflow' ),
-			__( 'Settings', 'automateflow' ),
+			__( 'Settings', 'netdevguru-bridge-for-automateflow' ),
+			__( 'Settings', 'netdevguru-bridge-for-automateflow' ),
 			self::CAPABILITY,
 			self::MENU_SLUG,
 			array( $this, 'render_settings_page' )
@@ -94,8 +98,8 @@ class AutomateFlow_Admin {
 		if ( $this->settings->is_enabled( 'campaigns' ) ) {
 			add_submenu_page(
 				self::MENU_SLUG,
-				__( 'Campaigns', 'automateflow' ),
-				__( 'Campaigns', 'automateflow' ),
+				__( 'Campaigns', 'netdevguru-bridge-for-automateflow' ),
+				__( 'Campaigns', 'netdevguru-bridge-for-automateflow' ),
 				self::CAPABILITY,
 				self::MENU_SLUG . '-campaigns',
 				array( $this, 'render_campaigns_page' )
@@ -104,8 +108,8 @@ class AutomateFlow_Admin {
 
 		add_submenu_page(
 			self::MENU_SLUG,
-			__( 'Activity Log', 'automateflow' ),
-			__( 'Activity Log', 'automateflow' ),
+			__( 'Activity Log', 'netdevguru-bridge-for-automateflow' ),
+			__( 'Activity Log', 'netdevguru-bridge-for-automateflow' ),
 			self::CAPABILITY,
 			self::MENU_SLUG . '-log',
 			array( $this, 'render_log_page' )
@@ -123,10 +127,10 @@ class AutomateFlow_Admin {
 		}
 
 		wp_enqueue_style(
-			'automateflow-admin',
-			AUTOMATEFLOW_PLUGIN_URL . 'assets/css/admin.css',
+			'netdevguru-bridge-admin',
+			NETDEVGURU_BRIDGE_PLUGIN_URL . 'assets/css/admin.css',
 			array(),
-			AUTOMATEFLOW_VERSION
+			NETDEVGURU_BRIDGE_VERSION
 		);
 	}
 
@@ -146,7 +150,7 @@ class AutomateFlow_Admin {
 		$lists    = $this->available_lists();
 		$roles    = wp_roles()->get_names();
 
-		require AUTOMATEFLOW_PLUGIN_DIR . 'admin/views/settings.php';
+		require NETDEVGURU_BRIDGE_PLUGIN_DIR . 'admin/views/settings.php';
 	}
 
 	/**
@@ -184,7 +188,7 @@ class AutomateFlow_Admin {
 			}
 		}
 
-		require AUTOMATEFLOW_PLUGIN_DIR . 'admin/views/campaigns.php';
+		require NETDEVGURU_BRIDGE_PLUGIN_DIR . 'admin/views/campaigns.php';
 	}
 
 	/**
@@ -193,9 +197,9 @@ class AutomateFlow_Admin {
 	public function render_log_page() {
 		$this->guard();
 
-		$entries = AutomateFlow_Logger::entries();
+		$entries = Netdevguru_Bridge_Logger::entries();
 
-		require AUTOMATEFLOW_PLUGIN_DIR . 'admin/views/log.php';
+		require NETDEVGURU_BRIDGE_PLUGIN_DIR . 'admin/views/log.php';
 	}
 
 	/*
@@ -212,7 +216,7 @@ class AutomateFlow_Admin {
 		check_admin_referer( self::SAVE );
 
 		$base_url = isset( $_POST['base_url'] ) ? esc_url_raw( wp_unslash( $_POST['base_url'] ) ) : '';
-		update_option( AutomateFlow_Settings::OPT_BASE_URL, untrailingslashit( $base_url ) );
+		update_option( Netdevguru_Bridge_Settings::OPT_BASE_URL, untrailingslashit( $base_url ) );
 
 		// Only overwrite the key when something was typed. The field renders empty with a
 		// placeholder, so an admin who saves the form without touching it keeps the stored
@@ -220,20 +224,20 @@ class AutomateFlow_Admin {
 		$api_key = isset( $_POST['api_key'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['api_key'] ) ) ) : '';
 
 		if ( '' !== $api_key ) {
-			update_option( AutomateFlow_Settings::OPT_API_KEY, $api_key );
+			update_option( Netdevguru_Bridge_Settings::OPT_API_KEY, $api_key );
 		}
 
 		$features = array();
 
-		foreach ( array_keys( AutomateFlow_Settings::FEATURES ) as $feature ) {
+		foreach ( array_keys( Netdevguru_Bridge_Settings::FEATURES ) as $feature ) {
 			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- check_admin_referer above.
 			$features[ $feature ] = ! empty( $_POST['features'][ $feature ] );
 		}
 
-		update_option( AutomateFlow_Settings::OPT_FEATURES, $features );
+		update_option( Netdevguru_Bridge_Settings::OPT_FEATURES, $features );
 
 		update_option(
-			AutomateFlow_Settings::OPT_DEFAULT_LIST,
+			Netdevguru_Bridge_Settings::OPT_DEFAULT_LIST,
 			isset( $_POST['default_list_id'] ) ? absint( wp_unslash( $_POST['default_list_id'] ) ) : 0
 		);
 
@@ -246,12 +250,12 @@ class AutomateFlow_Admin {
 		// the marketing box, which is the opposite of what readme.txt promises.
 		if ( ! empty( $_POST['woo_settings_rendered'] ) ) {
 			update_option(
-				AutomateFlow_Settings::OPT_WOO_LIST,
+				Netdevguru_Bridge_Settings::OPT_WOO_LIST,
 				isset( $_POST['woo_list_id'] ) ? absint( wp_unslash( $_POST['woo_list_id'] ) ) : 0
 			);
 
 			update_option(
-				AutomateFlow_Settings::OPT_WOO_CONSENT,
+				Netdevguru_Bridge_Settings::OPT_WOO_CONSENT,
 				empty( $_POST['woo_require_consent'] ) ? '0' : '1'
 			);
 		}
@@ -265,20 +269,20 @@ class AutomateFlow_Admin {
 			}
 		}
 
-		update_option( AutomateFlow_Settings::OPT_SYNC_ROLES, array_values( array_filter( $roles ) ) );
+		update_option( Netdevguru_Bridge_Settings::OPT_SYNC_ROLES, array_values( array_filter( $roles ) ) );
 
 		update_option(
-			AutomateFlow_Settings::OPT_WEBHOOK_SECRET,
+			Netdevguru_Bridge_Settings::OPT_WEBHOOK_SECRET,
 			isset( $_POST['webhook_secret'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['webhook_secret'] ) ) ) : ''
 		);
 
 		update_option(
-			AutomateFlow_Settings::OPT_MAIL_FROM,
+			Netdevguru_Bridge_Settings::OPT_MAIL_FROM,
 			isset( $_POST['mail_from'] ) ? sanitize_email( wp_unslash( $_POST['mail_from'] ) ) : ''
 		);
 
 		update_option(
-			AutomateFlow_Settings::OPT_MAIL_FROM_NAME,
+			Netdevguru_Bridge_Settings::OPT_MAIL_FROM_NAME,
 			isset( $_POST['mail_from_name'] ) ? sanitize_text_field( wp_unslash( $_POST['mail_from_name'] ) ) : ''
 		);
 
@@ -293,7 +297,7 @@ class AutomateFlow_Admin {
 			? array_map( 'sanitize_key', wp_unslash( $_POST['map_field_name'] ) )
 			: array();
 
-		update_option( AutomateFlow_Settings::OPT_FIELD_MAP, $this->parse_field_map( $map_keys, $map_names ) );
+		update_option( Netdevguru_Bridge_Settings::OPT_FIELD_MAP, $this->parse_field_map( $map_keys, $map_names ) );
 
 		$this->redirect_back( 'saved' );
 	}
@@ -346,7 +350,7 @@ class AutomateFlow_Admin {
 		$this->guard();
 		check_admin_referer( self::SYNC_ALL );
 
-		$contacts = new AutomateFlow_Contacts( $this->client, $this->settings );
+		$contacts = new Netdevguru_Bridge_Contacts( $this->client, $this->settings );
 		$queued   = $contacts->enqueue_all_users();
 
 		$this->redirect_back( 'queued', (string) $queued );
@@ -359,7 +363,7 @@ class AutomateFlow_Admin {
 		$this->guard();
 		check_admin_referer( self::FLUSH );
 
-		AutomateFlow_Forms::flush_cache();
+		Netdevguru_Bridge_Forms::flush_cache();
 
 		$this->redirect_back( 'flushed' );
 	}
@@ -371,7 +375,7 @@ class AutomateFlow_Admin {
 		$this->guard();
 		check_admin_referer( self::CLEAR_LOG );
 
-		AutomateFlow_Logger::clear();
+		Netdevguru_Bridge_Logger::clear();
 
 		wp_safe_redirect( admin_url( 'admin.php?page=' . self::MENU_SLUG . '-log' ) );
 		exit;
@@ -390,7 +394,7 @@ class AutomateFlow_Admin {
 		check_admin_referer( self::SEND . '_' . $campaign_id );
 
 		if ( $campaign_id <= 0 ) {
-			$this->redirect_campaigns( 'send_failed', __( 'No campaign was selected.', 'automateflow' ) );
+			$this->redirect_campaigns( 'send_failed', __( 'No campaign was selected.', 'netdevguru-bridge-for-automateflow' ) );
 		}
 
 		$result = $this->client->send_campaign( $campaign_id );
@@ -399,8 +403,8 @@ class AutomateFlow_Admin {
 			$this->redirect_campaigns( 'send_failed', $result->get_error_message() );
 		}
 
-		AutomateFlow_Logger::info(
-			__( 'Campaign send started from WordPress.', 'automateflow' ),
+		Netdevguru_Bridge_Logger::info(
+			__( 'Campaign send started from WordPress.', 'netdevguru-bridge-for-automateflow' ),
 			array( 'campaign_id' => $campaign_id )
 		);
 
@@ -418,7 +422,7 @@ class AutomateFlow_Admin {
 	 */
 	private function guard() {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_die( esc_html__( 'You do not have permission to manage AutomateFlow.', 'automateflow' ) );
+			wp_die( esc_html__( 'You do not have permission to manage this plugin.', 'netdevguru-bridge-for-automateflow' ) );
 		}
 	}
 
@@ -450,11 +454,11 @@ class AutomateFlow_Admin {
 	private function redirect_back( $status, $detail = '' ) {
 		$args = array(
 			'page'                => self::MENU_SLUG,
-			'automateflow_status' => $status,
+			'netdevguru_bridge_status' => $status,
 		);
 
 		if ( '' !== $detail ) {
-			$args['automateflow_detail'] = rawurlencode( $detail );
+			$args['netdevguru_bridge_detail'] = rawurlencode( $detail );
 		}
 
 		wp_safe_redirect( add_query_arg( $args, admin_url( 'admin.php' ) ) );
@@ -470,11 +474,11 @@ class AutomateFlow_Admin {
 	private function redirect_campaigns( $status, $detail = '' ) {
 		$args = array(
 			'page'                => self::MENU_SLUG . '-campaigns',
-			'automateflow_status' => $status,
+			'netdevguru_bridge_status' => $status,
 		);
 
 		if ( '' !== $detail ) {
-			$args['automateflow_detail'] = rawurlencode( $detail );
+			$args['netdevguru_bridge_detail'] = rawurlencode( $detail );
 		}
 
 		wp_safe_redirect( add_query_arg( $args, admin_url( 'admin.php' ) ) );
@@ -486,11 +490,11 @@ class AutomateFlow_Admin {
 	 */
 	public function render_notices() {
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only display of a redirect flag; no state changes here.
-		if ( ! isset( $_GET['automateflow_status'] ) || ! current_user_can( self::CAPABILITY ) ) {
+		if ( ! isset( $_GET['netdevguru_bridge_status'] ) || ! current_user_can( self::CAPABILITY ) ) {
 			return;
 		}
 
-		$status = sanitize_key( wp_unslash( $_GET['automateflow_status'] ) );
+		$status = sanitize_key( wp_unslash( $_GET['netdevguru_bridge_status'] ) );
 		// Sanitised twice on purpose, not by accident. The inner call sanitises the raw input
 		// at the boundary; rawurldecode() then undoes the rawurlencode() applied when the
 		// redirect was built, and decoding can reintroduce characters the first pass removed,
@@ -499,18 +503,18 @@ class AutomateFlow_Admin {
 		// invisible to static analysis — which is why the one-liner tripped Plugin Check.
 		$detail = '';
 
-		if ( isset( $_GET['automateflow_detail'] ) ) {
+		if ( isset( $_GET['netdevguru_bridge_detail'] ) ) {
 			$detail = sanitize_text_field(
-				rawurldecode( sanitize_text_field( wp_unslash( $_GET['automateflow_detail'] ) ) )
+				rawurldecode( sanitize_text_field( wp_unslash( $_GET['netdevguru_bridge_detail'] ) ) )
 			);
 		}
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		$messages = array(
-			'saved'   => array( 'success', __( 'Settings saved.', 'automateflow' ) ),
-			'test_ok' => array( 'success', __( 'Connected to AutomateFlow successfully.', 'automateflow' ) ),
-			'flushed' => array( 'success', __( 'Cached form definitions cleared.', 'automateflow' ) ),
-			'sending' => array( 'success', __( 'Campaign send started.', 'automateflow' ) ),
+			'saved'   => array( 'success', __( 'Settings saved.', 'netdevguru-bridge-for-automateflow' ) ),
+			'test_ok' => array( 'success', __( 'Connected to AutomateFlow successfully.', 'netdevguru-bridge-for-automateflow' ) ),
+			'flushed' => array( 'success', __( 'Cached form definitions cleared.', 'netdevguru-bridge-for-automateflow' ) ),
+			'sending' => array( 'success', __( 'Campaign send started.', 'netdevguru-bridge-for-automateflow' ) ),
 		);
 
 		if ( isset( $messages[ $status ] ) ) {
@@ -533,7 +537,7 @@ class AutomateFlow_Admin {
 							'%d user queued for sync. They will be sent in the background.',
 							'%d users queued for sync. They will be sent in the background.',
 							(int) $detail,
-							'automateflow'
+							'netdevguru-bridge-for-automateflow'
 						),
 						(int) $detail
 					)
@@ -549,7 +553,7 @@ class AutomateFlow_Admin {
 				esc_html(
 					'' !== $detail
 						? $detail
-						: __( 'The request to AutomateFlow failed.', 'automateflow' )
+						: __( 'The request to AutomateFlow failed.', 'netdevguru-bridge-for-automateflow' )
 				)
 			);
 		}

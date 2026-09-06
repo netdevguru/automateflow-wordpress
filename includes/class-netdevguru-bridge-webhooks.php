@@ -2,7 +2,7 @@
 /**
  * Receives AutomateFlow's outbound webhooks.
  *
- * @package AutomateFlow
+ * @package Netdevguru_Bridge_For_AutomateFlow
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -29,9 +29,9 @@ defined( 'ABSPATH' ) || exit;
  * The comparison uses hash_equals() so a wrong secret cannot be recovered one byte at a time
  * by timing the responses.
  */
-class AutomateFlow_Webhooks {
+class Netdevguru_Bridge_Webhooks {
 
-	const NAMESPACE_V1 = 'automateflow/v1';
+	const NAMESPACE_V1 = 'netdevguru-bridge/v1';
 	const ROUTE        = '/webhook';
 
 	/**
@@ -55,16 +55,16 @@ class AutomateFlow_Webhooks {
 	/**
 	 * Settings repository.
 	 *
-	 * @var AutomateFlow_Settings
+	 * @var Netdevguru_Bridge_Settings
 	 */
 	private $settings;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param AutomateFlow_Settings $settings Settings repository.
+	 * @param Netdevguru_Bridge_Settings $settings Settings repository.
 	 */
-	public function __construct( AutomateFlow_Settings $settings ) {
+	public function __construct( Netdevguru_Bridge_Settings $settings ) {
 		$this->settings = $settings;
 	}
 
@@ -76,8 +76,8 @@ class AutomateFlow_Webhooks {
 
 		// Built-in reaction to the two events that mean "stop mailing this person": mirror the
 		// state onto the WordPress user so the site's own view agrees with the platform's.
-		add_action( 'automateflow_webhook_contact_bounced', array( $this, 'flag_undeliverable' ) );
-		add_action( 'automateflow_webhook_contact_complained', array( $this, 'flag_undeliverable' ) );
+		add_action( 'netdevguru_bridge_webhook_contact_bounced', array( $this, 'flag_undeliverable' ) );
+		add_action( 'netdevguru_bridge_webhook_contact_complained', array( $this, 'flag_undeliverable' ) );
 	}
 
 	/**
@@ -119,7 +119,7 @@ class AutomateFlow_Webhooks {
 		if ( '' === $secret ) {
 			// Fails closed, matching the platform's own posture on an unset webhook secret:
 			// an endpoint that accepts unauthenticated events is worse than one that is off.
-			AutomateFlow_Logger::error( __( 'Webhook rejected: no shared secret is configured.', 'automateflow' ) );
+			Netdevguru_Bridge_Logger::error( __( 'Webhook rejected: no shared secret is configured.', 'netdevguru-bridge-for-automateflow' ) );
 
 			return new WP_REST_Response( array( 'message' => 'Webhook secret not configured.' ), 503 );
 		}
@@ -129,8 +129,8 @@ class AutomateFlow_Webhooks {
 		$event     = sanitize_text_field( (string) $request->get_header( 'x_webhook_event' ) );
 
 		if ( '' === $signature || ! $this->signature_matches( $body, $signature, $secret ) ) {
-			AutomateFlow_Logger::error(
-				__( 'Webhook rejected: signature mismatch.', 'automateflow' ),
+			Netdevguru_Bridge_Logger::error(
+				__( 'Webhook rejected: signature mismatch.', 'netdevguru-bridge-for-automateflow' ),
 				array( 'event' => '' !== $event ? $event : 'unknown' )
 			);
 
@@ -152,8 +152,8 @@ class AutomateFlow_Webhooks {
 			return new WP_REST_Response( array( 'message' => 'Missing event type.' ), 400 );
 		}
 
-		AutomateFlow_Logger::info(
-			__( 'Webhook received.', 'automateflow' ),
+		Netdevguru_Bridge_Logger::info(
+			__( 'Webhook received.', 'netdevguru-bridge-for-automateflow' ),
 			array( 'event' => $event )
 		);
 
@@ -163,16 +163,16 @@ class AutomateFlow_Webhooks {
 		 * @param string               $event   Event type, e.g. "campaign.completed".
 		 * @param array<string, mixed> $payload Decoded body.
 		 */
-		do_action( 'automateflow_webhook', $event, $payload );
+		do_action( 'netdevguru_bridge_webhook', $event, $payload );
 
 		/**
 		 * Fires for one specific event, with dots replaced by underscores.
 		 *
-		 * `automateflow_webhook_campaign_completed`, and so on.
+		 * `netdevguru_bridge_webhook_campaign_completed`, and so on.
 		 *
 		 * @param array<string, mixed> $payload Decoded body.
 		 */
-		do_action( 'automateflow_webhook_' . str_replace( '.', '_', $event ), $payload );
+		do_action( 'netdevguru_bridge_webhook_' . str_replace( '.', '_', $event ), $payload );
 
 		// 200 promptly: non-2xx puts the delivery into the platform's retry schedule and,
 		// after enough attempts, its dead-letter path. Handlers hooked above run inline, so a
@@ -230,7 +230,7 @@ class AutomateFlow_Webhooks {
 			return;
 		}
 
-		update_user_meta( $user->ID, '_automateflow_undeliverable', time() );
+		update_user_meta( $user->ID, '_netdevguru_bridge_undeliverable', time() );
 
 		/**
 		 * Fires when a synced user's address bounced or drew a complaint.
@@ -238,6 +238,6 @@ class AutomateFlow_Webhooks {
 		 * @param WP_User              $user    Affected user.
 		 * @param array<string, mixed> $payload Webhook body.
 		 */
-		do_action( 'automateflow_user_undeliverable', $user, $payload );
+		do_action( 'netdevguru_bridge_user_undeliverable', $user, $payload );
 	}
 }

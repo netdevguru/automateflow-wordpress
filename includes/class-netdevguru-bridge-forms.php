@@ -2,7 +2,7 @@
 /**
  * Renders and submits AutomateFlow subscription forms.
  *
- * @package AutomateFlow
+ * @package Netdevguru_Bridge_For_AutomateFlow
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -22,23 +22,23 @@ defined( 'ABSPATH' ) || exit;
  * be trivially scriptable, and a definition cache so a popular page does not spend an API
  * request per view.
  */
-class AutomateFlow_Forms {
+class Netdevguru_Bridge_Forms {
 
-	const ACTION        = 'automateflow_submit_form';
-	const CACHE_PREFIX  = 'automateflow_form_';
+	const ACTION        = 'netdevguru_bridge_submit_form';
+	const CACHE_PREFIX  = 'netdevguru_bridge_form_';
 	const CACHE_SECONDS = 900;
 
 	/**
 	 * API client.
 	 *
-	 * @var AutomateFlow_Client
+	 * @var Netdevguru_Bridge_Client
 	 */
 	private $client;
 
 	/**
 	 * Settings repository.
 	 *
-	 * @var AutomateFlow_Settings
+	 * @var Netdevguru_Bridge_Settings
 	 */
 	private $settings;
 
@@ -55,10 +55,10 @@ class AutomateFlow_Forms {
 	/**
 	 * Constructor.
 	 *
-	 * @param AutomateFlow_Client   $client   API client.
-	 * @param AutomateFlow_Settings $settings Settings repository.
+	 * @param Netdevguru_Bridge_Client   $client   API client.
+	 * @param Netdevguru_Bridge_Settings $settings Settings repository.
 	 */
-	public function __construct( AutomateFlow_Client $client, AutomateFlow_Settings $settings ) {
+	public function __construct( Netdevguru_Bridge_Client $client, Netdevguru_Bridge_Settings $settings ) {
 		$this->client   = $client;
 		$this->settings = $settings;
 	}
@@ -71,7 +71,7 @@ class AutomateFlow_Forms {
 			return;
 		}
 
-		add_shortcode( 'automateflow_form', array( $this, 'render_shortcode' ) );
+		add_shortcode( 'netdevguru_bridge_form', array( $this, 'render_shortcode' ) );
 
 		add_action( 'admin_post_' . self::ACTION, array( $this, 'handle_submit' ) );
 		add_action( 'admin_post_nopriv_' . self::ACTION, array( $this, 'handle_submit' ) );
@@ -89,11 +89,11 @@ class AutomateFlow_Forms {
 	 * One-shot read of the status cookie, before output starts.
 	 */
 	public function capture_status() {
-		if ( empty( $_COOKIE['automateflow_status'] ) ) {
+		if ( empty( $_COOKIE['netdevguru_bridge_status'] ) ) {
 			return;
 		}
 
-		$decoded = json_decode( sanitize_text_field( wp_unslash( $_COOKIE['automateflow_status'] ) ), true );
+		$decoded = json_decode( sanitize_text_field( wp_unslash( $_COOKIE['netdevguru_bridge_status'] ) ), true );
 
 		$this->expire_status_cookie();
 
@@ -120,18 +120,18 @@ class AutomateFlow_Forms {
 		}
 
 		wp_register_script(
-			'automateflow-block',
-			AUTOMATEFLOW_PLUGIN_URL . 'assets/js/block.js',
+			'netdevguru-bridge-block',
+			NETDEVGURU_BRIDGE_PLUGIN_URL . 'assets/js/block.js',
 			array( 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-i18n' ),
-			AUTOMATEFLOW_VERSION,
+			NETDEVGURU_BRIDGE_VERSION,
 			true
 		);
 
 		register_block_type(
-			'automateflow/form',
+			'netdevguru-bridge/form',
 			array(
 				'api_version'     => 2,
-				'editor_script'   => 'automateflow-block',
+				'editor_script'   => 'netdevguru-bridge-block',
 				'render_callback' => array( $this, 'render_block' ),
 				'attributes'      => array(
 					'uuid'  => array(
@@ -173,7 +173,7 @@ class AutomateFlow_Forms {
 				'title' => '',
 			),
 			$atts,
-			'automateflow_form'
+			'netdevguru_bridge_form'
 		);
 
 		return $this->render( $atts['uuid'], $atts['title'] );
@@ -190,7 +190,7 @@ class AutomateFlow_Forms {
 		$uuid = sanitize_text_field( $uuid );
 
 		if ( '' === $uuid ) {
-			return $this->notice( __( 'No AutomateFlow form was specified.', 'automateflow' ) );
+			return $this->notice( __( 'No AutomateFlow form was specified.', 'netdevguru-bridge-for-automateflow' ) );
 		}
 
 		$definition = $this->definition( $uuid );
@@ -199,7 +199,7 @@ class AutomateFlow_Forms {
 			// Deliberately generic for visitors: the underlying message can name the
 			// workspace or the reason a key was rejected, which is not public information.
 			// The specific error is in the plugin log.
-			return $this->notice( __( 'This form is temporarily unavailable.', 'automateflow' ) );
+			return $this->notice( __( 'This form is temporarily unavailable.', 'netdevguru-bridge-for-automateflow' ) );
 		}
 
 		$fields  = isset( $definition['fields'] ) && is_array( $definition['fields'] ) ? $definition['fields'] : array();
@@ -209,35 +209,35 @@ class AutomateFlow_Forms {
 
 		ob_start();
 		?>
-		<div class="automateflow-form-wrapper">
+		<div class="netdevguru-bridge-form-wrapper">
 			<?php if ( '' !== $heading ) : ?>
-				<h3 class="automateflow-form-title"><?php echo esc_html( $heading ); ?></h3>
+				<h3 class="netdevguru-bridge-form-title"><?php echo esc_html( $heading ); ?></h3>
 			<?php endif; ?>
 
 			<?php if ( null !== $status ) : ?>
-				<p class="automateflow-form-status automateflow-form-status--<?php echo esc_attr( $status['type'] ); ?>">
+				<p class="netdevguru-bridge-form-status netdevguru-bridge-form-status--<?php echo esc_attr( $status['type'] ); ?>">
 					<?php echo esc_html( $status['message'] ); ?>
 				</p>
 			<?php endif; ?>
 
-			<form class="automateflow-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+			<form class="netdevguru-bridge-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<input type="hidden" name="action" value="<?php echo esc_attr( self::ACTION ); ?>" />
 				<input type="hidden" name="form_uuid" value="<?php echo esc_attr( $uuid ); ?>" />
 				<input type="hidden" name="redirect_to" value="<?php echo esc_url( $this->current_url() ); ?>" />
-				<?php wp_nonce_field( self::ACTION . '_' . $uuid, '_automateflow_nonce' ); ?>
+				<?php wp_nonce_field( self::ACTION . '_' . $uuid, '_netdevguru_bridge_nonce' ); ?>
 
 				<?php
 				// A honeypot: a field a person never sees and a bot fills in. Cheap, and it
 				// keeps the plugin free of a third-party captcha dependency.
 				?>
-				<div class="automateflow-hp" aria-hidden="true" style="position:absolute;left:-9999px;">
-					<label for="automateflow-website-<?php echo esc_attr( $uuid ); ?>"><?php esc_html_e( 'Leave this field empty', 'automateflow' ); ?></label>
-					<input type="text" name="automateflow_website" id="automateflow-website-<?php echo esc_attr( $uuid ); ?>" tabindex="-1" autocomplete="off" />
+				<div class="netdevguru-bridge-hp" aria-hidden="true" style="position:absolute;left:-9999px;">
+					<label for="netdevguru-bridge-website-<?php echo esc_attr( $uuid ); ?>"><?php esc_html_e( 'Leave this field empty', 'netdevguru-bridge-for-automateflow' ); ?></label>
+					<input type="text" name="netdevguru_bridge_website" id="netdevguru-bridge-website-<?php echo esc_attr( $uuid ); ?>" tabindex="-1" autocomplete="off" />
 				</div>
 
-				<p class="automateflow-field">
-					<label for="automateflow-email-<?php echo esc_attr( $uuid ); ?>"><?php esc_html_e( 'Email', 'automateflow' ); ?> <span aria-hidden="true">*</span></label>
-					<input type="email" name="email" id="automateflow-email-<?php echo esc_attr( $uuid ); ?>" required />
+				<p class="netdevguru-bridge-field">
+					<label for="netdevguru-bridge-email-<?php echo esc_attr( $uuid ); ?>"><?php esc_html_e( 'Email', 'netdevguru-bridge-for-automateflow' ); ?> <span aria-hidden="true">*</span></label>
+					<input type="email" name="email" id="netdevguru-bridge-email-<?php echo esc_attr( $uuid ); ?>" required />
 				</p>
 
 				<?php foreach ( $fields as $field ) : ?>
@@ -252,8 +252,8 @@ class AutomateFlow_Forms {
 						continue;
 					}
 					?>
-					<p class="automateflow-field">
-						<label for="automateflow-<?php echo esc_attr( $name . '-' . $uuid ); ?>">
+					<p class="netdevguru-bridge-field">
+						<label for="netdevguru-bridge-<?php echo esc_attr( $name . '-' . $uuid ); ?>">
 							<?php echo esc_html( $label ); ?>
 							<?php if ( $required ) : ?>
 								<span aria-hidden="true">*</span>
@@ -262,14 +262,14 @@ class AutomateFlow_Forms {
 						<input
 							type="text"
 							name="fields[<?php echo esc_attr( $name ); ?>]"
-							id="automateflow-<?php echo esc_attr( $name . '-' . $uuid ); ?>"
+							id="netdevguru-bridge-<?php echo esc_attr( $name . '-' . $uuid ); ?>"
 							<?php echo $required ? 'required' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Literal attribute name, no variable content. ?>
 						/>
 					</p>
 				<?php endforeach; ?>
 
-				<p class="automateflow-submit">
-					<button type="submit"><?php esc_html_e( 'Subscribe', 'automateflow' ); ?></button>
+				<p class="netdevguru-bridge-submit">
+					<button type="submit"><?php esc_html_e( 'Subscribe', 'netdevguru-bridge-for-automateflow' ); ?></button>
 				</p>
 			</form>
 		</div>
@@ -284,21 +284,21 @@ class AutomateFlow_Forms {
 	public function handle_submit() {
 		$uuid = isset( $_POST['form_uuid'] ) ? sanitize_text_field( wp_unslash( $_POST['form_uuid'] ) ) : '';
 
-		if ( '' === $uuid || ! isset( $_POST['_automateflow_nonce'] ) ) {
+		if ( '' === $uuid || ! isset( $_POST['_netdevguru_bridge_nonce'] ) ) {
 			wp_safe_redirect( $this->redirect_target() );
 			exit;
 		}
 
-		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_automateflow_nonce'] ) ), self::ACTION . '_' . $uuid ) ) {
-			$this->set_status( 'error', __( 'That form has expired. Please try again.', 'automateflow' ) );
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_netdevguru_bridge_nonce'] ) ), self::ACTION . '_' . $uuid ) ) {
+			$this->set_status( 'error', __( 'That form has expired. Please try again.', 'netdevguru-bridge-for-automateflow' ) );
 			wp_safe_redirect( $this->redirect_target() );
 			exit;
 		}
 
 		// Honeypot filled means a bot. Redirect as though it worked: telling an automated
 		// submitter which signal caught it just invites a second attempt without it.
-		if ( ! empty( $_POST['automateflow_website'] ) ) {
-			$this->set_status( 'success', __( 'Thanks — please check your inbox to confirm.', 'automateflow' ) );
+		if ( ! empty( $_POST['netdevguru_bridge_website'] ) ) {
+			$this->set_status( 'success', __( 'Thanks — please check your inbox to confirm.', 'netdevguru-bridge-for-automateflow' ) );
 			wp_safe_redirect( $this->redirect_target() );
 			exit;
 		}
@@ -306,7 +306,7 @@ class AutomateFlow_Forms {
 		$email = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
 
 		if ( '' === $email || ! is_email( $email ) ) {
-			$this->set_status( 'error', __( 'Please enter a valid email address.', 'automateflow' ) );
+			$this->set_status( 'error', __( 'Please enter a valid email address.', 'netdevguru-bridge-for-automateflow' ) );
 			wp_safe_redirect( $this->redirect_target() );
 			exit;
 		}
@@ -328,9 +328,9 @@ class AutomateFlow_Forms {
 		$result = $this->client->submit_form( $uuid, $payload );
 
 		if ( is_wp_error( $result ) ) {
-			$this->set_status( 'error', __( 'We could not complete your subscription. Please try again shortly.', 'automateflow' ) );
+			$this->set_status( 'error', __( 'We could not complete your subscription. Please try again shortly.', 'netdevguru-bridge-for-automateflow' ) );
 		} else {
-			$this->set_status( 'success', __( 'Thanks — please check your inbox to confirm.', 'automateflow' ) );
+			$this->set_status( 'success', __( 'Thanks — please check your inbox to confirm.', 'netdevguru-bridge-for-automateflow' ) );
 		}
 
 		wp_safe_redirect( $this->redirect_target() );
@@ -424,7 +424,7 @@ class AutomateFlow_Forms {
 	 */
 	private function set_status( $type, $message ) {
 		setcookie(
-			'automateflow_status',
+			'netdevguru_bridge_status',
 			wp_json_encode(
 				array(
 					'type'    => $type,
@@ -462,7 +462,7 @@ class AutomateFlow_Forms {
 	 */
 	private function expire_status_cookie() {
 		setcookie(
-			'automateflow_status',
+			'netdevguru_bridge_status',
 			'',
 			array(
 				'expires'  => time() - 3600,
@@ -482,6 +482,6 @@ class AutomateFlow_Forms {
 	 * @return string
 	 */
 	private function notice( $message ) {
-		return '<p class="automateflow-form-notice">' . esc_html( $message ) . '</p>';
+		return '<p class="netdevguru-bridge-form-notice">' . esc_html( $message ) . '</p>';
 	}
 }

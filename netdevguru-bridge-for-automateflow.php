@@ -1,26 +1,27 @@
 <?php
 /**
- * Plugin Name:       AutomateFlow
- * Plugin URI:        https://github.com/netdevguru/AutomateFlow
- * Description:       Connects WordPress and WooCommerce to an AutomateFlow workspace — sync contacts, route site email through the transactional API, embed subscription forms, trigger automations, and review campaign performance without leaving wp-admin.
+ * Plugin Name:       netdevguru Bridge for AutomateFlow
+ * Plugin URI:        https://github.com/netdevguru/automateflow-wordpress
+ * Description:       Connects WordPress and WooCommerce to an AutomateFlow workspace — sync contacts, route site email through the transactional API, embed subscription forms, trigger automations, and review campaign performance without leaving wp-admin. Not affiliated with any other product of a similar name.
  * Version:           1.0.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
- * Author:            AutomateFlow
+ * Author:            netdevguru
+ * Author URI:        https://profiles.wordpress.org/netdevguru/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       automateflow
+ * Text Domain:       netdevguru-bridge-for-automateflow
  * Domain Path:       /languages
  *
- * @package AutomateFlow
+ * @package Netdevguru_Bridge_For_AutomateFlow
  */
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'AUTOMATEFLOW_VERSION', '1.0.0' );
-define( 'AUTOMATEFLOW_PLUGIN_FILE', __FILE__ );
-define( 'AUTOMATEFLOW_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'AUTOMATEFLOW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'NETDEVGURU_BRIDGE_VERSION', '1.0.0' );
+define( 'NETDEVGURU_BRIDGE_PLUGIN_FILE', __FILE__ );
+define( 'NETDEVGURU_BRIDGE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'NETDEVGURU_BRIDGE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 /**
  * Minimum PHP guard.
@@ -39,7 +40,7 @@ if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
 				esc_html(
 					sprintf(
 						/* translators: %s: current PHP version. */
-						__( 'AutomateFlow requires PHP 7.4 or newer. This site runs PHP %s, so the plugin has not loaded.', 'automateflow' ),
+						__( 'netdevguru Bridge for AutomateFlow requires PHP 7.4 or newer. This site runs PHP %s, so the plugin has not loaded.', 'netdevguru-bridge-for-automateflow' ),
 						PHP_VERSION
 					)
 				)
@@ -50,15 +51,15 @@ if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
 	return;
 }
 
-require_once AUTOMATEFLOW_PLUGIN_DIR . 'includes/class-automateflow-logger.php';
-require_once AUTOMATEFLOW_PLUGIN_DIR . 'includes/class-automateflow-settings.php';
-require_once AUTOMATEFLOW_PLUGIN_DIR . 'includes/class-automateflow-client.php';
-require_once AUTOMATEFLOW_PLUGIN_DIR . 'includes/class-automateflow-contacts.php';
-require_once AUTOMATEFLOW_PLUGIN_DIR . 'includes/class-automateflow-mailer.php';
-require_once AUTOMATEFLOW_PLUGIN_DIR . 'includes/class-automateflow-forms.php';
-require_once AUTOMATEFLOW_PLUGIN_DIR . 'includes/class-automateflow-webhooks.php';
-require_once AUTOMATEFLOW_PLUGIN_DIR . 'includes/class-automateflow-woocommerce.php';
-require_once AUTOMATEFLOW_PLUGIN_DIR . 'admin/class-automateflow-admin.php';
+require_once NETDEVGURU_BRIDGE_PLUGIN_DIR . 'includes/class-netdevguru-bridge-logger.php';
+require_once NETDEVGURU_BRIDGE_PLUGIN_DIR . 'includes/class-netdevguru-bridge-settings.php';
+require_once NETDEVGURU_BRIDGE_PLUGIN_DIR . 'includes/class-netdevguru-bridge-client.php';
+require_once NETDEVGURU_BRIDGE_PLUGIN_DIR . 'includes/class-netdevguru-bridge-contacts.php';
+require_once NETDEVGURU_BRIDGE_PLUGIN_DIR . 'includes/class-netdevguru-bridge-mailer.php';
+require_once NETDEVGURU_BRIDGE_PLUGIN_DIR . 'includes/class-netdevguru-bridge-forms.php';
+require_once NETDEVGURU_BRIDGE_PLUGIN_DIR . 'includes/class-netdevguru-bridge-webhooks.php';
+require_once NETDEVGURU_BRIDGE_PLUGIN_DIR . 'includes/class-netdevguru-bridge-woocommerce.php';
+require_once NETDEVGURU_BRIDGE_PLUGIN_DIR . 'admin/class-netdevguru-bridge-admin.php';
 
 /**
  * Shared plugin container.
@@ -66,26 +67,26 @@ require_once AUTOMATEFLOW_PLUGIN_DIR . 'admin/class-automateflow-admin.php';
  * Deliberately a lazy singleton rather than instantiating everything at file scope: the
  * client reads options, and options are not reliably available until `plugins_loaded`.
  */
-final class AutomateFlow_Plugin {
+final class Netdevguru_Bridge_Plugin {
 
 	/**
 	 * Sole instance.
 	 *
-	 * @var AutomateFlow_Plugin|null
+	 * @var Netdevguru_Bridge_Plugin|null
 	 */
 	private static $instance = null;
 
 	/**
 	 * API client.
 	 *
-	 * @var AutomateFlow_Client
+	 * @var Netdevguru_Bridge_Client
 	 */
 	private $client;
 
 	/**
 	 * Settings repository.
 	 *
-	 * @var AutomateFlow_Settings
+	 * @var Netdevguru_Bridge_Settings
 	 */
 	private $settings;
 
@@ -93,14 +94,14 @@ final class AutomateFlow_Plugin {
 	 * Wire the object graph. Private — use instance().
 	 */
 	private function __construct() {
-		$this->settings = new AutomateFlow_Settings();
-		$this->client   = new AutomateFlow_Client( $this->settings );
+		$this->settings = new Netdevguru_Bridge_Settings();
+		$this->client   = new Netdevguru_Bridge_Client( $this->settings );
 	}
 
 	/**
 	 * Accessor.
 	 *
-	 * @return AutomateFlow_Plugin
+	 * @return Netdevguru_Bridge_Plugin
 	 */
 	public static function instance() {
 		if ( null === self::$instance ) {
@@ -113,7 +114,7 @@ final class AutomateFlow_Plugin {
 	/**
 	 * API client.
 	 *
-	 * @return AutomateFlow_Client
+	 * @return Netdevguru_Bridge_Client
 	 */
 	public function client() {
 		return $this->client;
@@ -122,7 +123,7 @@ final class AutomateFlow_Plugin {
 	/**
 	 * Settings repository.
 	 *
-	 * @return AutomateFlow_Settings
+	 * @return Netdevguru_Bridge_Settings
 	 */
 	public function settings() {
 		return $this->settings;
@@ -135,16 +136,16 @@ final class AutomateFlow_Plugin {
 	 * flat list and a disabled feature costs one option read rather than a conditional here.
 	 */
 	public function boot() {
-		( new AutomateFlow_Admin( $this->client, $this->settings ) )->register();
-		( new AutomateFlow_Contacts( $this->client, $this->settings ) )->register();
-		( new AutomateFlow_Mailer( $this->client, $this->settings ) )->register();
-		( new AutomateFlow_Forms( $this->client, $this->settings ) )->register();
-		( new AutomateFlow_Webhooks( $this->settings ) )->register();
+		( new Netdevguru_Bridge_Admin( $this->client, $this->settings ) )->register();
+		( new Netdevguru_Bridge_Contacts( $this->client, $this->settings ) )->register();
+		( new Netdevguru_Bridge_Mailer( $this->client, $this->settings ) )->register();
+		( new Netdevguru_Bridge_Forms( $this->client, $this->settings ) )->register();
+		( new Netdevguru_Bridge_Webhooks( $this->settings ) )->register();
 
 		// Guarded on the class, not on a settings flag: the integration's hooks do not exist
 		// to be registered when WooCommerce is absent.
 		if ( class_exists( 'WooCommerce' ) ) {
-			( new AutomateFlow_WooCommerce( $this->client, $this->settings ) )->register();
+			( new Netdevguru_Bridge_WooCommerce( $this->client, $this->settings ) )->register();
 		}
 	}
 }
@@ -152,10 +153,10 @@ final class AutomateFlow_Plugin {
 /**
  * Convenience accessor for the container.
  *
- * @return AutomateFlow_Plugin
+ * @return Netdevguru_Bridge_Plugin
  */
 function automateflow() {
-	return AutomateFlow_Plugin::instance();
+	return Netdevguru_Bridge_Plugin::instance();
 }
 
 /**
@@ -170,7 +171,7 @@ add_action(
 	'before_woocommerce_init',
 	static function () {
 		if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
-			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', AUTOMATEFLOW_PLUGIN_FILE, true );
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', NETDEVGURU_BRIDGE_PLUGIN_FILE, true );
 		}
 	}
 );
@@ -187,8 +188,8 @@ register_activation_hook(
 	static function () {
 		// Backfill and retry queues run on WP-Cron; the schedules are added by the modules
 		// themselves, but the first tick has to be planted here or nothing ever starts.
-		if ( ! wp_next_scheduled( 'automateflow_process_sync_queue' ) ) {
-			wp_schedule_event( time() + MINUTE_IN_SECONDS, 'automateflow_five_minutes', 'automateflow_process_sync_queue' );
+		if ( ! wp_next_scheduled( 'netdevguru_bridge_process_sync_queue' ) ) {
+			wp_schedule_event( time() + MINUTE_IN_SECONDS, 'netdevguru_bridge_five_minutes', 'netdevguru_bridge_process_sync_queue' );
 		}
 	}
 );
@@ -196,7 +197,7 @@ register_activation_hook(
 register_deactivation_hook(
 	__FILE__,
 	static function () {
-		wp_clear_scheduled_hook( 'automateflow_process_sync_queue' );
+		wp_clear_scheduled_hook( 'netdevguru_bridge_process_sync_queue' );
 	}
 );
 
@@ -225,11 +226,11 @@ add_filter(
 		 * string. Only the pre-init machine callers see the English fallback, and they are
 		 * reading `interval`, not `display`.
 		 */
-		$schedules['automateflow_five_minutes'] = array(
+		$schedules['netdevguru_bridge_five_minutes'] = array(
 			'interval' => 5 * MINUTE_IN_SECONDS,
 			'display'  => did_action( 'init' )
-				? __( 'Every five minutes (AutomateFlow)', 'automateflow' )
-				: 'Every five minutes (AutomateFlow)',
+				? __( 'Every five minutes (netdevguru Bridge)', 'netdevguru-bridge-for-automateflow' )
+				: 'Every five minutes (netdevguru Bridge)',
 		);
 
 		return $schedules;

@@ -1,23 +1,33 @@
-# WordPress plugin
+# netdevguru Bridge for AutomateFlow
 
-The fourth deployable. A WordPress plugin that connects a site to an AutomateFlow workspace
-over the public `/api/v1/*` contract — the same contract third parties use, with no privileged
-access of any kind.
+A WordPress plugin that connects a site to an AutomateFlow workspace over the public
+`/api/v1/*` contract — the same contract third parties use, with no privileged access of any
+kind.
+
+**Naming.** The display name and slug are `netdevguru Bridge for AutomateFlow` /
+`netdevguru-bridge-for-automateflow`. The plugin was submitted to wordpress.org as
+"AutomateFlow" and pended: the reviewer flagged that name as conflicting with unrelated
+automation services and as too close to an existing directory plugin, and separately could not
+tie an `Author: AutomateFlow` to a personal account. Leading with the wordpress.org username
+and putting the platform name after "for" is the pattern the directory prescribes for
+referencing a name in a way that denotes no affiliation. Every PHP prefix follows from it:
+`Netdevguru_Bridge_*` classes, `NETDEVGURU_BRIDGE_*` constants, `netdevguru_bridge_*` hooks,
+options and functions.
 
 ```
-wordpress/automateflow/     the plugin, as it ships
-├── automateflow.php        header, PHP guard, container, cron cadence, HPOS declaration
+netdevguru-bridge-for-automateflow/            the plugin, as it ships
+├── netdevguru-bridge-for-automateflow.php     header, PHP guard, container, cron cadence, HPOS declaration
 ├── readme.txt              wordpress.org metadata (see "Before submitting" below)
 ├── uninstall.php           option cleanup on delete
 ├── includes/
-│   ├── class-automateflow-client.php        the only network call-site
-│   ├── class-automateflow-settings.php      typed option access
-│   ├── class-automateflow-contacts.php      users → contacts, queued
-│   ├── class-automateflow-mailer.php        pre_wp_mail → /transactional/send
-│   ├── class-automateflow-forms.php         shortcode + block + relay
-│   ├── class-automateflow-webhooks.php      signed inbound REST endpoint
-│   ├── class-automateflow-woocommerce.php   customer sync + order triggers
-│   └── class-automateflow-logger.php        capped activity log
+│   ├── class-netdevguru-bridge-client.php        the only network call-site
+│   ├── class-netdevguru-bridge-settings.php      typed option access
+│   ├── class-netdevguru-bridge-contacts.php      users → contacts, queued
+│   ├── class-netdevguru-bridge-mailer.php        pre_wp_mail → /transactional/send
+│   ├── class-netdevguru-bridge-forms.php         shortcode + block + relay
+│   ├── class-netdevguru-bridge-webhooks.php      signed inbound REST endpoint
+│   ├── class-netdevguru-bridge-woocommerce.php   customer sync + order triggers
+│   └── class-netdevguru-bridge-logger.php        capped activity log
 ├── admin/                  menu, settings/campaigns/log screens
 └── assets/                 admin CSS, buildless editor script
 ```
@@ -52,27 +62,34 @@ than looped.
 ## Local development
 
 There is no build step and no Composer dependency — what is in the tree is what runs. Symlink
-or copy `wordpress/automateflow` into a site's `wp-content/plugins/`.
+or copy this directory into a site's `wp-content/plugins/` as
+`netdevguru-bridge-for-automateflow`. The directory name matters: it must match the slug and
+the main file's basename, or WordPress will not find the plugin.
 
 ```bash
-php -l wordpress/automateflow/**/*.php     # every file must parse
-node --check wordpress/automateflow/assets/js/block.js
+find . -name '*.php' -not -path './.git/*' -exec php -l {} \;   # every file must parse
+node --check assets/js/block.js
+./build.sh                                                       # dist/<slug>-<version>.zip
 ```
 
 If you have the WordPress coding standards available, the plugin is written to pass them:
 
 ```bash
-phpcs --standard=WordPress wordpress/automateflow
+phpcs --standard=phpcs.xml.dist .
 ```
 
 ## Before submitting to wordpress.org
 
-Three things need a human with a running site:
+Four things need a human with a running site:
 
-1. **`Tested up to:`** in `readme.txt` is a claim about testing that has not happened. Install
-   on the current WordPress release, exercise each feature, then set it honestly.
-2. **Screenshots.** `readme.txt` describes three; the `assets/` directory of the SVN
-   repository needs the actual `screenshot-1..3.png`.
-3. **The external-services section** must stay accurate. It is a review requirement, and it is
+1. **`Tested up to:`** in `readme.txt` claims 7.1, which is the current release but not
+   something this repository can attest to. Install on it, exercise each feature, then confirm
+   or lower the claim.
+2. **Regenerate `languages/*.pot`.** It was last generated under the old slug and old strings;
+   its headers have been corrected by hand, but the catalogue itself is stale. Run
+   `wp i18n make-pot . languages/netdevguru-bridge-for-automateflow.pot` before packaging.
+3. **Screenshots.** `readme.txt` describes four; the `assets/` directory of the SVN repository
+   needs the actual `screenshot-1..4.png`.
+4. **The external-services section** must stay accurate. It is a review requirement, and it is
    the section most likely to go stale as features are added — every new field the plugin
    transmits belongs in that list.

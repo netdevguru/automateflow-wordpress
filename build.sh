@@ -2,14 +2,14 @@
 #
 # Builds the ZIP that gets uploaded to wordpress.org/plugins/developers/add/.
 #
-# The archive contains a single top-level `automateflow/` directory, which is what the
+# The archive contains a single top-level `netdevguru-bridge-for-automateflow/` directory, which is what the
 # reviewer's unzip expects and what a user's manual "Upload Plugin" needs in order to land
-# the files at wp-content/plugins/automateflow/. Everything listed in .distignore is left
+# the files at wp-content/plugins/netdevguru-bridge-for-automateflow/. Everything listed in .distignore is left
 # out, so development tooling never reaches users.
 #
 set -euo pipefail
 
-SLUG="automateflow"
+SLUG="netdevguru-bridge-for-automateflow"
 VERSION="$(sed -n 's/^ \* Version: *//p' "${SLUG}.php" | head -1 | tr -d '[:space:]')"
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OUT="${ROOT}/dist"

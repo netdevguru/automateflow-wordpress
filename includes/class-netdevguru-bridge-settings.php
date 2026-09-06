@@ -2,7 +2,7 @@
 /**
  * Typed access to every stored option.
  *
- * @package AutomateFlow
+ * @package Netdevguru_Bridge_For_AutomateFlow
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -14,21 +14,21 @@ defined( 'ABSPATH' ) || exit;
  * a changed default is a single edit and no module can disagree with another about what
  * "enabled" means.
  */
-class AutomateFlow_Settings {
+class Netdevguru_Bridge_Settings {
 
-	const OPT_BASE_URL       = 'automateflow_base_url';
-	const OPT_API_KEY        = 'automateflow_api_key';
-	const OPT_FEATURES       = 'automateflow_features';
-	const OPT_DEFAULT_LIST   = 'automateflow_default_list_id';
-	const OPT_SYNC_ROLES     = 'automateflow_sync_roles';
-	const OPT_FIELD_MAP      = 'automateflow_field_map';
-	const OPT_WEBHOOK_SECRET = 'automateflow_webhook_secret';
-	const OPT_MAIL_FROM      = 'automateflow_mail_from';
-	const OPT_MAIL_FROM_NAME = 'automateflow_mail_from_name';
-	const OPT_WOO_LIST       = 'automateflow_woo_list_id';
-	const OPT_WOO_CONSENT    = 'automateflow_woo_require_consent';
-	const OPT_SYNC_QUEUE     = 'automateflow_sync_queue';
-	const OPT_LAST_ERROR     = 'automateflow_last_error';
+	const OPT_BASE_URL       = 'netdevguru_bridge_base_url';
+	const OPT_API_KEY        = 'netdevguru_bridge_api_key';
+	const OPT_FEATURES       = 'netdevguru_bridge_features';
+	const OPT_DEFAULT_LIST   = 'netdevguru_bridge_default_list_id';
+	const OPT_SYNC_ROLES     = 'netdevguru_bridge_sync_roles';
+	const OPT_FIELD_MAP      = 'netdevguru_bridge_field_map';
+	const OPT_WEBHOOK_SECRET = 'netdevguru_bridge_webhook_secret';
+	const OPT_MAIL_FROM      = 'netdevguru_bridge_mail_from';
+	const OPT_MAIL_FROM_NAME = 'netdevguru_bridge_mail_from_name';
+	const OPT_WOO_LIST       = 'netdevguru_bridge_woo_list_id';
+	const OPT_WOO_CONSENT    = 'netdevguru_bridge_woo_require_consent';
+	const OPT_SYNC_QUEUE     = 'netdevguru_bridge_sync_queue';
+	const OPT_LAST_ERROR     = 'netdevguru_bridge_last_error';
 
 	/**
 	 * Feature switches, all default-off.
@@ -59,7 +59,7 @@ class AutomateFlow_Settings {
 	/**
 	 * The API key, or an empty string.
 	 *
-	 * Never echo this. `AutomateFlow_Admin` renders a masked placeholder and only writes a
+	 * Never echo this. `Netdevguru_Bridge_Admin` renders a masked placeholder and only writes a
 	 * new value when the submitted field is non-empty, so the real key is never sent to the
 	 * browser and cannot leak through a page cache or a browser autofill store.
 	 *

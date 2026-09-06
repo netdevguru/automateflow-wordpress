@@ -1,4 +1,4 @@
-=== AutomateFlow ===
+=== netdevguru Bridge for AutomateFlow ===
 Contributors: netdevguru
 Tags: email marketing, newsletter, automation, woocommerce, smtp
 Requires at least: 6.0
@@ -8,11 +8,13 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Connect WordPress and WooCommerce to your AutomateFlow workspace: sync contacts, route site email, embed forms, and trigger automations.
+Connect WordPress and WooCommerce to an AutomateFlow workspace: sync contacts, route site email, embed forms, and trigger automations.
 
 == Description ==
 
-AutomateFlow is a self-hosted email marketing and automation platform. This plugin connects a WordPress site to an AutomateFlow workspace so the two stay in step without manual exports.
+This plugin connects a WordPress site to an AutomateFlow workspace — a self-hosted email marketing and automation platform — so the two stay in step without manual exports.
+
+This is an independent connector plugin. It is not affiliated with, endorsed by, or sponsored by any other product or service that uses a similar name.
 
 **What it does**
 
@@ -45,13 +47,15 @@ No data is transmitted before you enter a URL and an API key and enable a featur
 
 The plugin contacts no service operated by the plugin author. The only host it ever connects to is the AutomateFlow installation whose URL you enter on the settings screen, so the applicable terms and privacy policy are those of that installation — your own, if you self-host it, or your provider's if someone hosts it for you.
 
-AutomateFlow itself is open-source software rather than a hosted product. Its source, licence and documentation are at https://github.com/netdevguru/AutomateFlow and the terms it is distributed under are at https://github.com/netdevguru/AutomateFlow/blob/main/LICENSE
+There is no default endpoint and no fallback host: with the URL field empty the plugin makes no outbound requests at all.
+
+This plugin's own source and licence are at https://github.com/netdevguru/automateflow-wordpress and https://github.com/netdevguru/automateflow-wordpress/blob/main/LICENSE
 
 == Installation ==
 
-1. Upload the plugin to `/wp-content/plugins/automateflow/` and activate it.
+1. Upload the plugin to `/wp-content/plugins/netdevguru-bridge-for-automateflow/` and activate it.
 2. In AutomateFlow, create an API key with both read and write scope. The key is shown once — copy it then.
-3. Go to **AutomateFlow → Settings** in wp-admin, enter your AutomateFlow URL and the API key, and press **Test connection**.
+3. Go to **netdevguru Bridge → Settings** in wp-admin, enter your AutomateFlow URL and the API key, and press **Test connection**.
 4. Switch on the features you want. Each has its own options below the feature list.
 5. For incoming webhooks, copy the endpoint URL shown on the settings screen into a webhook endpoint in your AutomateFlow workspace, then paste the secret it generates back into the settings screen.
 
@@ -63,7 +67,7 @@ No. Forms post to WordPress, which relays the submission to the API server-side.
 
 = What happens if AutomateFlow is unreachable? =
 
-Contact syncs are queued and retried on a five-minute schedule, so nothing is lost. Outgoing mail falls back to the WordPress default mailer, so site email still arrives. Add `add_filter( 'automateflow_mail_fallback', '__return_false' );` if you would rather a failed send report failure than fall back.
+Contact syncs are queued and retried on a five-minute schedule, so nothing is lost. Outgoing mail falls back to the WordPress default mailer, so site email still arrives. Add `add_filter( 'netdevguru_bridge_mail_fallback', '__return_false' );` if you would rather a failed send report failure than fall back.
 
 = Why is my bulk user sync taking a while? =
 

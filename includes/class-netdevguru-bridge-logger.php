@@ -2,7 +2,7 @@
 /**
  * Bounded activity log.
  *
- * @package AutomateFlow
+ * @package Netdevguru_Bridge_For_AutomateFlow
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -19,9 +19,9 @@ defined( 'ABSPATH' ) || exit;
  * request that touches it and, if it ever landed in the autoload set, on every request full
  * stop. Writes here are explicitly non-autoloaded and the buffer is trimmed on every append.
  */
-class AutomateFlow_Logger {
+class Netdevguru_Bridge_Logger {
 
-	const OPTION   = 'automateflow_log';
+	const OPTION   = 'netdevguru_bridge_log';
 	const MAX_ROWS = 100;
 
 	/**

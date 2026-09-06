@@ -2,7 +2,7 @@
 /**
  * WooCommerce customer sync and order-driven automation triggers.
  *
- * @package AutomateFlow
+ * @package Netdevguru_Bridge_For_AutomateFlow
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -31,10 +31,10 @@ defined( 'ABSPATH' ) || exit;
  * payment gateway can complete an order minutes later, off-session, and an order created in
  * wp-admin never passes through checkout at all. Status transitions catch every route in.
  */
-class AutomateFlow_WooCommerce {
+class Netdevguru_Bridge_WooCommerce {
 
-	const OPT_IN_FIELD      = 'automateflow_marketing_opt_in';
-	const CONSENT_META      = '_automateflow_marketing_consent';
+	const OPT_IN_FIELD      = 'netdevguru_bridge_marketing_opt_in';
+	const CONSENT_META      = '_netdevguru_bridge_marketing_consent';
 	const TRIGGER_PLACED    = 'woocommerce_order_placed';
 	const TRIGGER_COMPLETED = 'woocommerce_order_completed';
 	const TRIGGER_REFUNDED  = 'woocommerce_order_refunded';
@@ -43,24 +43,24 @@ class AutomateFlow_WooCommerce {
 	/**
 	 * API client.
 	 *
-	 * @var AutomateFlow_Client
+	 * @var Netdevguru_Bridge_Client
 	 */
 	private $client;
 
 	/**
 	 * Settings repository.
 	 *
-	 * @var AutomateFlow_Settings
+	 * @var Netdevguru_Bridge_Settings
 	 */
 	private $settings;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param AutomateFlow_Client   $client   API client.
-	 * @param AutomateFlow_Settings $settings Settings repository.
+	 * @param Netdevguru_Bridge_Client   $client   API client.
+	 * @param Netdevguru_Bridge_Settings $settings Settings repository.
 	 */
-	public function __construct( AutomateFlow_Client $client, AutomateFlow_Settings $settings ) {
+	public function __construct( Netdevguru_Bridge_Client $client, Netdevguru_Bridge_Settings $settings ) {
 		$this->client   = $client;
 		$this->settings = $settings;
 	}
@@ -93,8 +93,8 @@ class AutomateFlow_WooCommerce {
 			self::OPT_IN_FIELD,
 			array(
 				'type'  => 'checkbox',
-				'class' => array( 'form-row', 'automateflow-opt-in' ),
-				'label' => __( 'Email me news and offers', 'automateflow' ),
+				'class' => array( 'form-row', 'netdevguru-bridge-opt-in' ),
+				'label' => __( 'Email me news and offers', 'netdevguru-bridge-for-automateflow' ),
 			),
 			// Never pre-ticked: a pre-checked marketing box is not consent under GDPR, and
 			// several jurisdictions treat it as an outright violation.
@@ -172,7 +172,7 @@ class AutomateFlow_WooCommerce {
 		// A status can be set more than once — a gateway callback racing an admin edit, a
 		// plugin re-saving the order — and each pass would re-enroll the customer in the same
 		// automation. One marker per order per event makes the handler idempotent.
-		$marker = '_automateflow_fired_' . $event_key;
+		$marker = '_netdevguru_bridge_fired_' . $event_key;
 
 		if ( 'yes' === $order->get_meta( $marker ) ) {
 			return;
@@ -198,8 +198,8 @@ class AutomateFlow_WooCommerce {
 		$contact = $this->client->upsert_contact( $email, $this->contact_fields( $order ) );
 
 		if ( is_wp_error( $contact ) ) {
-			AutomateFlow_Logger::warning(
-				__( 'Could not sync a WooCommerce customer.', 'automateflow' ),
+			Netdevguru_Bridge_Logger::warning(
+				__( 'Could not sync a WooCommerce customer.', 'netdevguru-bridge-for-automateflow' ),
 				array(
 					'order'  => $order->get_order_number(),
 					'reason' => $contact->get_error_code(),
@@ -218,8 +218,8 @@ class AutomateFlow_WooCommerce {
 			$added = $this->client->add_contact_to_list( $list_id, $contact_id );
 
 			if ( is_wp_error( $added ) ) {
-				AutomateFlow_Logger::warning(
-					__( 'Customer synced but not added to the store list.', 'automateflow' ),
+				Netdevguru_Bridge_Logger::warning(
+					__( 'Customer synced but not added to the store list.', 'netdevguru-bridge-for-automateflow' ),
 					array( 'list_id' => $list_id )
 				);
 			}
@@ -228,8 +228,8 @@ class AutomateFlow_WooCommerce {
 		$triggered = $this->client->trigger_automation( $event_key, $email, $this->order_context( $order ) );
 
 		if ( is_wp_error( $triggered ) ) {
-			AutomateFlow_Logger::warning(
-				__( 'Order automation trigger failed.', 'automateflow' ),
+			Netdevguru_Bridge_Logger::warning(
+				__( 'Order automation trigger failed.', 'netdevguru-bridge-for-automateflow' ),
 				array(
 					'order' => $order->get_order_number(),
 					'event' => $event_key,
@@ -242,8 +242,8 @@ class AutomateFlow_WooCommerce {
 		$order->update_meta_data( $marker, 'yes' );
 		$order->save();
 
-		AutomateFlow_Logger::info(
-			__( 'Order automation triggered.', 'automateflow' ),
+		Netdevguru_Bridge_Logger::info(
+			__( 'Order automation triggered.', 'netdevguru-bridge-for-automateflow' ),
 			array(
 				'order' => $order->get_order_number(),
 				'event' => $event_key,
@@ -285,7 +285,7 @@ class AutomateFlow_WooCommerce {
 		 * @param WC_Order             $order  Source order.
 		 */
 		return apply_filters(
-			'automateflow_woocommerce_contact_fields',
+			'netdevguru_bridge_woocommerce_contact_fields',
 			array(
 				'first_name'    => $order->get_billing_first_name(),
 				'last_name'     => $order->get_billing_last_name(),
@@ -324,7 +324,7 @@ class AutomateFlow_WooCommerce {
 		 * @param WC_Order             $order   Source order.
 		 */
 		return apply_filters(
-			'automateflow_woocommerce_order_context',
+			'netdevguru_bridge_woocommerce_order_context',
 			array(
 				'order_id'     => $order->get_id(),
 				'order_number' => $order->get_order_number(),

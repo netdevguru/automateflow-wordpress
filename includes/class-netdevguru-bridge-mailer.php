@@ -2,7 +2,7 @@
 /**
  * Routes wp_mail() through the AutomateFlow transactional API.
  *
- * @package AutomateFlow
+ * @package Netdevguru_Bridge_For_AutomateFlow
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * Sites that would rather fail loudly can flip it:
  *
- *     add_filter( 'automateflow_mail_fallback', '__return_false' );
+ *     add_filter( 'netdevguru_bridge_mail_fallback', '__return_false' );
  *
  * ## Rate limiting
  *
@@ -34,29 +34,29 @@ defined( 'ABSPATH' ) || exit;
  * people costs N requests against a key limited per minute. Bulk notification plugins can
  * exhaust that budget; those sends fall back to WordPress rather than being dropped.
  */
-class AutomateFlow_Mailer {
+class Netdevguru_Bridge_Mailer {
 
 	/**
 	 * API client.
 	 *
-	 * @var AutomateFlow_Client
+	 * @var Netdevguru_Bridge_Client
 	 */
 	private $client;
 
 	/**
 	 * Settings repository.
 	 *
-	 * @var AutomateFlow_Settings
+	 * @var Netdevguru_Bridge_Settings
 	 */
 	private $settings;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param AutomateFlow_Client   $client   API client.
-	 * @param AutomateFlow_Settings $settings Settings repository.
+	 * @param Netdevguru_Bridge_Client   $client   API client.
+	 * @param Netdevguru_Bridge_Settings $settings Settings repository.
 	 */
-	public function __construct( AutomateFlow_Client $client, AutomateFlow_Settings $settings ) {
+	public function __construct( Netdevguru_Bridge_Client $client, Netdevguru_Bridge_Settings $settings ) {
 		$this->client   = $client;
 		$this->settings = $settings;
 	}
@@ -132,8 +132,8 @@ class AutomateFlow_Mailer {
 			$result        = $this->client->send_transactional( $message );
 
 			if ( is_wp_error( $result ) ) {
-				AutomateFlow_Logger::warning(
-					__( 'Transactional send failed; handing the message back to WordPress.', 'automateflow' ),
+				Netdevguru_Bridge_Logger::warning(
+					__( 'Transactional send failed; handing the message back to WordPress.', 'netdevguru-bridge-for-automateflow' ),
 					array(
 						'reason'  => $result->get_error_code(),
 						'subject' => $message['subject'],
@@ -145,7 +145,7 @@ class AutomateFlow_Mailer {
 				 *
 				 * @param bool $fallback Default true.
 				 */
-				if ( apply_filters( 'automateflow_mail_fallback', true ) ) {
+				if ( apply_filters( 'netdevguru_bridge_mail_fallback', true ) ) {
 					// Returning null re-runs the *whole* message through WordPress, including
 					// any recipient already sent above. Only reachable when at least one
 					// recipient failed, and duplicate-vs-dropped is the trade documented in
@@ -293,8 +293,8 @@ class AutomateFlow_Mailer {
 			// large attachment is a memory problem here and a rejected request there. Skip
 			// past a conservative ceiling and let the message go without it.
 			if ( $size <= 0 || $total + $size > 5 * MB_IN_BYTES ) {
-				AutomateFlow_Logger::warning(
-					__( 'Attachment skipped: the message exceeds the size the transactional API accepts.', 'automateflow' ),
+				Netdevguru_Bridge_Logger::warning(
+					__( 'Attachment skipped: the message exceeds the size the transactional API accepts.', 'netdevguru-bridge-for-automateflow' ),
 					array( 'file' => basename( $path ) )
 				);
 

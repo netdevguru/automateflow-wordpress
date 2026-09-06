@@ -1,9 +1,9 @@
-# Copyright (C) 2026 AutomateFlow
+# Copyright (C) 2026 netdevguru
 # This file is distributed under the GPL-2.0-or-later license.
 msgid ""
 msgstr ""
-"Project-Id-Version: AutomateFlow 1.0.0\n"
-"Report-Msgid-Bugs-To: https://github.com/netdevguru/AutomateFlow/issues\n"
+"Project-Id-Version: netdevguru Bridge for AutomateFlow 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/netdevguru/automateflow-wordpress/issues\n"
 "POT-Creation-Date: 2026-09-01 00:49\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -12,62 +12,62 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Domain: automateflow\n"
+"X-Domain: netdevguru-bridge-for-automateflow\n"
 
-#: admin/class-automateflow-admin.php:76 admin/class-automateflow-admin.php:77
+#: admin/class-netdevguru-bridge-admin.php:76 admin/class-netdevguru-bridge-admin.php:77
 #: admin/views/settings.php:20
 msgid "AutomateFlow"
 msgstr ""
 
-#: admin/class-automateflow-admin.php:87 admin/class-automateflow-admin.php:88
+#: admin/class-netdevguru-bridge-admin.php:87 admin/class-netdevguru-bridge-admin.php:88
 msgid "Settings"
 msgstr ""
 
-#: admin/class-automateflow-admin.php:97 admin/class-automateflow-admin.php:98
+#: admin/class-netdevguru-bridge-admin.php:97 admin/class-netdevguru-bridge-admin.php:98
 msgid "Campaigns"
 msgstr ""
 
-#: admin/class-automateflow-admin.php:107
-#: admin/class-automateflow-admin.php:108
+#: admin/class-netdevguru-bridge-admin.php:107
+#: admin/class-netdevguru-bridge-admin.php:108
 msgid "Activity Log"
 msgstr ""
 
-#: admin/class-automateflow-admin.php:384
+#: admin/class-netdevguru-bridge-admin.php:384
 msgid "No campaign was selected."
 msgstr ""
 
-#: admin/class-automateflow-admin.php:394
+#: admin/class-netdevguru-bridge-admin.php:394
 msgid "Campaign send started from WordPress."
 msgstr ""
 
-#: admin/class-automateflow-admin.php:412
+#: admin/class-netdevguru-bridge-admin.php:412
 msgid "You do not have permission to manage AutomateFlow."
 msgstr ""
 
-#: admin/class-automateflow-admin.php:491
+#: admin/class-netdevguru-bridge-admin.php:491
 msgid "Settings saved."
 msgstr ""
 
-#: admin/class-automateflow-admin.php:492
+#: admin/class-netdevguru-bridge-admin.php:492
 msgid "Connected to AutomateFlow successfully."
 msgstr ""
 
-#: admin/class-automateflow-admin.php:493
+#: admin/class-netdevguru-bridge-admin.php:493
 msgid "Cached form definitions cleared."
 msgstr ""
 
-#: admin/class-automateflow-admin.php:494
+#: admin/class-netdevguru-bridge-admin.php:494
 msgid "Campaign send started."
 msgstr ""
 
-#: admin/class-automateflow-admin.php:514
+#: admin/class-netdevguru-bridge-admin.php:514
 #, php-format
 msgid "%d user queued for sync. They will be sent in the background."
 msgid_plural "%d users queued for sync. They will be sent in the background."
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-automateflow-admin.php:533
+#: admin/class-netdevguru-bridge-admin.php:533
 msgid "The request to AutomateFlow failed."
 msgstr ""
 
@@ -402,141 +402,141 @@ msgstr ""
 msgid "Every five minutes (AutomateFlow)"
 msgstr ""
 
-#: includes/class-automateflow-client.php:75
+#: includes/class-netdevguru-bridge-client.php:75
 msgid ""
 "AutomateFlow is not connected. Add your site URL and API key on the settings "
 "screen."
 msgstr ""
 
 #. translators: %s: underlying transport error.
-#: includes/class-automateflow-client.php:112
+#: includes/class-netdevguru-bridge-client.php:112
 #, php-format
 msgid "Could not reach AutomateFlow: %s"
 msgstr ""
 
 #. translators: %s: rate-limit window name, e.g. "per_minute".
-#: includes/class-automateflow-client.php:177
+#: includes/class-netdevguru-bridge-client.php:177
 #, php-format
 msgid "AutomateFlow rate limit reached (%s). The request will be retried."
 msgstr ""
 
-#: includes/class-automateflow-client.php:180
+#: includes/class-netdevguru-bridge-client.php:180
 msgid "AutomateFlow rate limit reached. The request will be retried."
 msgstr ""
 
 #. translators: %s: feature key, e.g. "api_access_enabled".
-#: includes/class-automateflow-client.php:190
+#: includes/class-netdevguru-bridge-client.php:190
 #, php-format
 msgid "Your AutomateFlow plan does not include this capability (%s)."
 msgstr ""
 
-#: includes/class-automateflow-client.php:202
+#: includes/class-netdevguru-bridge-client.php:202
 msgid "AutomateFlow rejected the API key."
 msgstr ""
 
 #. translators: %d: HTTP status code.
-#: includes/class-automateflow-client.php:217
+#: includes/class-netdevguru-bridge-client.php:217
 #, php-format
 msgid "AutomateFlow returned an unexpected response (HTTP %d)."
 msgstr ""
 
-#: includes/class-automateflow-client.php:243
+#: includes/class-netdevguru-bridge-client.php:243
 msgid "AutomateFlow rejected the data as invalid."
 msgstr ""
 
 #. translators: 1: number synced, 2: number still queued.
-#: includes/class-automateflow-contacts.php:172
+#: includes/class-netdevguru-bridge-contacts.php:172
 #, php-format
 msgid "Synced %1$d contact(s); %2$d still queued."
 msgstr ""
 
-#: includes/class-automateflow-contacts.php:233
+#: includes/class-netdevguru-bridge-contacts.php:233
 msgid "Contact saved but could not be added to the default list."
 msgstr ""
 
-#: includes/class-automateflow-contacts.php:338
+#: includes/class-netdevguru-bridge-contacts.php:338
 msgid "Could not unsubscribe the contact for a deleted user."
 msgstr ""
 
-#: includes/class-automateflow-contacts.php:351
+#: includes/class-netdevguru-bridge-contacts.php:351
 msgid "Subscribe me to the newsletter"
 msgstr ""
 
-#: includes/class-automateflow-forms.php:193
+#: includes/class-netdevguru-bridge-forms.php:193
 msgid "No AutomateFlow form was specified."
 msgstr ""
 
-#: includes/class-automateflow-forms.php:202
+#: includes/class-netdevguru-bridge-forms.php:202
 msgid "This form is temporarily unavailable."
 msgstr ""
 
-#: includes/class-automateflow-forms.php:234
+#: includes/class-netdevguru-bridge-forms.php:234
 msgid "Leave this field empty"
 msgstr ""
 
-#: includes/class-automateflow-forms.php:239
+#: includes/class-netdevguru-bridge-forms.php:239
 msgid "Email"
 msgstr ""
 
-#: includes/class-automateflow-forms.php:272
+#: includes/class-netdevguru-bridge-forms.php:272
 msgid "Subscribe"
 msgstr ""
 
-#: includes/class-automateflow-forms.php:293
+#: includes/class-netdevguru-bridge-forms.php:293
 msgid "That form has expired. Please try again."
 msgstr ""
 
-#: includes/class-automateflow-forms.php:301
-#: includes/class-automateflow-forms.php:333
+#: includes/class-netdevguru-bridge-forms.php:301
+#: includes/class-netdevguru-bridge-forms.php:333
 msgid "Thanks — please check your inbox to confirm."
 msgstr ""
 
-#: includes/class-automateflow-forms.php:309
+#: includes/class-netdevguru-bridge-forms.php:309
 msgid "Please enter a valid email address."
 msgstr ""
 
-#: includes/class-automateflow-forms.php:331
+#: includes/class-netdevguru-bridge-forms.php:331
 msgid "We could not complete your subscription. Please try again shortly."
 msgstr ""
 
-#: includes/class-automateflow-mailer.php:136
+#: includes/class-netdevguru-bridge-mailer.php:136
 msgid "Transactional send failed; handing the message back to WordPress."
 msgstr ""
 
-#: includes/class-automateflow-mailer.php:297
+#: includes/class-netdevguru-bridge-mailer.php:297
 msgid ""
 "Attachment skipped: the message exceeds the size the transactional API "
 "accepts."
 msgstr ""
 
-#: includes/class-automateflow-webhooks.php:122
+#: includes/class-netdevguru-bridge-webhooks.php:122
 msgid "Webhook rejected: no shared secret is configured."
 msgstr ""
 
-#: includes/class-automateflow-webhooks.php:133
+#: includes/class-netdevguru-bridge-webhooks.php:133
 msgid "Webhook rejected: signature mismatch."
 msgstr ""
 
-#: includes/class-automateflow-webhooks.php:156
+#: includes/class-netdevguru-bridge-webhooks.php:156
 msgid "Webhook received."
 msgstr ""
 
-#: includes/class-automateflow-woocommerce.php:97
+#: includes/class-netdevguru-bridge-woocommerce.php:97
 msgid "Email me news and offers"
 msgstr ""
 
-#: includes/class-automateflow-woocommerce.php:202
+#: includes/class-netdevguru-bridge-woocommerce.php:202
 msgid "Could not sync a WooCommerce customer."
 msgstr ""
 
-#: includes/class-automateflow-woocommerce.php:222
+#: includes/class-netdevguru-bridge-woocommerce.php:222
 msgid "Customer synced but not added to the store list."
 msgstr ""
 
-#: includes/class-automateflow-woocommerce.php:232
+#: includes/class-netdevguru-bridge-woocommerce.php:232
 msgid "Order automation trigger failed."
 msgstr ""
 
-#: includes/class-automateflow-woocommerce.php:246
+#: includes/class-netdevguru-bridge-woocommerce.php:246
 msgid "Order automation triggered."
 msgstr ""

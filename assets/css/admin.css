@@ -6,45 +6,45 @@
  * classes track the admin colour scheme the user picked — including the dark ones — for free.
  */
 
-.automateflow-actions {
+.netdevguru-bridge-actions {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 12px;
 	align-items: center;
 }
 
-.automateflow-actions form {
+.netdevguru-bridge-actions form {
 	margin: 0;
 }
 
-.automateflow-endpoint {
+.netdevguru-bridge-endpoint {
 	display: inline-block;
 	padding: 4px 8px;
 	word-break: break-all;
 }
 
-.automateflow-keys {
+.netdevguru-bridge-keys {
 	margin: 4px 0 0;
 }
 
-.automateflow-keys li {
+.netdevguru-bridge-keys li {
 	margin: 0 0 2px;
 }
 
-.automateflow-map input.code {
+.netdevguru-bridge-map input.code {
 	width: 100%;
 }
 
-.automateflow-inline-form {
+.netdevguru-bridge-inline-form {
 	display: inline-block;
 	margin: 0 0 0 8px;
 }
 
-.automateflow-row-actions {
+.netdevguru-bridge-row-actions {
 	white-space: nowrap;
 }
 
-.automateflow-row--active td {
+.netdevguru-bridge-row--active td {
 	box-shadow: inset 3px 0 0 #2271b1;
 }
 
@@ -54,8 +54,8 @@
  * app's own status badges: colour alone is not readable for every user, and these are
  * exactly the rows worth spotting.
  */
-.automateflow-status,
-.automateflow-level {
+.netdevguru-bridge-status,
+.netdevguru-bridge-level {
 	display: inline-block;
 	padding: 2px 8px;
 	border-radius: 9px;
@@ -66,63 +66,63 @@
 	border: 1px solid transparent;
 }
 
-.automateflow-status--draft {
+.netdevguru-bridge-status--draft {
 	background: #f0f0f1;
 	border-color: #dcdcde;
 	color: #50575e;
 }
 
-.automateflow-status--scheduled {
+.netdevguru-bridge-status--scheduled {
 	background: #fcf3e3;
 	border-color: #f0d9a8;
 	color: #8a6116;
 }
 
-.automateflow-status--sending {
+.netdevguru-bridge-status--sending {
 	background: #e6f2fb;
 	border-color: #b8d8ef;
 	color: #135e96;
 }
 
-.automateflow-status--sent,
-.automateflow-status--completed {
+.netdevguru-bridge-status--sent,
+.netdevguru-bridge-status--completed {
 	background: #edfaef;
 	border-color: #b8e6c4;
 	color: #216e39;
 }
 
-.automateflow-status--paused {
+.netdevguru-bridge-status--paused {
 	background: #fcf3e3;
 	border-color: #f0d9a8;
 	color: #8a6116;
 }
 
-.automateflow-status--cancelled,
-.automateflow-status--failed {
+.netdevguru-bridge-status--cancelled,
+.netdevguru-bridge-status--failed {
 	background: #fcebea;
 	border-color: #f3c2bf;
 	color: #8a1f11;
 }
 
-.automateflow-level--info {
+.netdevguru-bridge-level--info {
 	background: #e6f2fb;
 	border-color: #b8d8ef;
 	color: #135e96;
 }
 
-.automateflow-level--warning {
+.netdevguru-bridge-level--warning {
 	background: #fcf3e3;
 	border-color: #f0d9a8;
 	color: #8a6116;
 }
 
-.automateflow-level--error {
+.netdevguru-bridge-level--error {
 	background: #fcebea;
 	border-color: #f3c2bf;
 	color: #8a1f11;
 }
 
-.automateflow-stats-card {
+.netdevguru-bridge-stats-card {
 	background: #fff;
 	border: 1px solid #c3c4c7;
 	border-left: 4px solid #2271b1;
@@ -130,23 +130,23 @@
 	margin: 16px 0;
 }
 
-.automateflow-stats-card ul {
+.netdevguru-bridge-stats-card ul {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 24px;
 	margin: 8px 0;
 }
 
-.automateflow-stats-card li {
+.netdevguru-bridge-stats-card li {
 	margin: 0;
 }
 
-.automateflow-stats-card strong {
+.netdevguru-bridge-stats-card strong {
 	display: block;
 	font-size: 20px;
 	line-height: 1.2;
 }
 
-.automateflow-clear-log {
+.netdevguru-bridge-clear-log {
 	margin: 0 0 12px;
 }

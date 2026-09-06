@@ -5,7 +5,7 @@
  * build step: what is in the repository is exactly what runs, which is both a
  * wordpress.org review expectation and one less thing to keep in sync.
  *
- * The block is server-rendered — see AutomateFlow_Forms::render_block() — so this file only
+ * The block is server-rendered — see Netdevguru_Bridge_Forms::render_block() — so this file only
  * has to collect the form uuid. It deliberately does not preview the real form: doing so
  * would need the API key in the editor, and the key never leaves the server.
  */
@@ -15,9 +15,9 @@
 	var el = element.createElement;
 	var __ = i18n.__;
 
-	blocks.registerBlockType( 'automateflow/form', {
-		title: __( 'AutomateFlow Form', 'automateflow' ),
-		description: __( 'Embed a subscription form from your AutomateFlow workspace.', 'automateflow' ),
+	blocks.registerBlockType( 'netdevguru-bridge/form', {
+		title: __( 'AutomateFlow Form', 'netdevguru-bridge-for-automateflow' ),
+		description: __( 'Embed a subscription form from your AutomateFlow workspace.', 'netdevguru-bridge-for-automateflow' ),
 		icon: 'email-alt',
 		category: 'widgets',
 		attributes: {
@@ -35,22 +35,22 @@
 					components.Placeholder,
 					{
 						icon: 'email-alt',
-						label: __( 'AutomateFlow Form', 'automateflow' ),
+						label: __( 'AutomateFlow Form', 'netdevguru-bridge-for-automateflow' ),
 						instructions: __(
 							'Paste the form UUID from your AutomateFlow workspace. The form renders on the published page.',
-							'automateflow'
+							'netdevguru-bridge-for-automateflow'
 						)
 					},
 					el( components.TextControl, {
-						label: __( 'Form UUID', 'automateflow' ),
+						label: __( 'Form UUID', 'netdevguru-bridge-for-automateflow' ),
 						value: props.attributes.uuid,
 						onChange: function ( value ) {
 							props.setAttributes( { uuid: value } );
 						}
 					} ),
 					el( components.TextControl, {
-						label: __( 'Heading (optional)', 'automateflow' ),
-						help: __( 'Overrides the form name from AutomateFlow.', 'automateflow' ),
+						label: __( 'Heading (optional)', 'netdevguru-bridge-for-automateflow' ),
+						help: __( 'Overrides the form name from AutomateFlow.', 'netdevguru-bridge-for-automateflow' ),
 						value: props.attributes.title,
 						onChange: function ( value ) {
 							props.setAttributes( { title: value } );

@@ -24,3 +24,9 @@ README.md
 # wp.org serves screenshots and banners from the SVN /assets directory, not from the
 # plugin ZIP, so anything staged for that must not ship to users.
 .wordpress-org
+
+# Correspondence with the review team. Kept in the repo for context, but it is not part of
+# the plugin and shipping it to users would leak a private thread — this file was caught in
+# a built archive once already.
+*.eml
+dist

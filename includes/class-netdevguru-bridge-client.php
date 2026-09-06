@@ -2,7 +2,7 @@
 /**
  * HTTP client for the AutomateFlow public API.
  *
- * @package AutomateFlow
+ * @package Netdevguru_Bridge_For_AutomateFlow
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -23,21 +23,21 @@ defined( 'ABSPATH' ) || exit;
  *
  * | Status | Body                                        | WP_Error code           |
  * |--------|---------------------------------------------|-------------------------|
- * | 401    | `{message}`                                 | `automateflow_auth`     |
- * | 403    | `{feature_limit_exceeded, feature}`         | `automateflow_feature`  |
- * | 422    | `{message, errors:{field:[...]}}`           | `automateflow_invalid`  |
- * | 429    | `{rate_limit_exceeded, window}`             | `automateflow_throttled`|
+ * | 401    | `{message}`                                 | `netdevguru_bridge_auth`     |
+ * | 403    | `{feature_limit_exceeded, feature}`         | `netdevguru_bridge_feature`  |
+ * | 422    | `{message, errors:{field:[...]}}`           | `netdevguru_bridge_invalid`  |
+ * | 429    | `{rate_limit_exceeded, window}`             | `netdevguru_bridge_throttled`|
  *
- * `automateflow_throttled` is the one callers must handle rather than surface: the key is
+ * `netdevguru_bridge_throttled` is the one callers must handle rather than surface: the key is
  * limited to a fixed number of requests a minute, so a bulk sync will meet it routinely and
  * the right answer is to requeue, not to drop the record or show the user an error.
  */
-class AutomateFlow_Client {
+class Netdevguru_Bridge_Client {
 
 	/**
 	 * Settings repository.
 	 *
-	 * @var AutomateFlow_Settings
+	 * @var Netdevguru_Bridge_Settings
 	 */
 	private $settings;
 
@@ -53,9 +53,9 @@ class AutomateFlow_Client {
 	/**
 	 * Constructor.
 	 *
-	 * @param AutomateFlow_Settings $settings Settings repository.
+	 * @param Netdevguru_Bridge_Settings $settings Settings repository.
 	 */
-	public function __construct( AutomateFlow_Settings $settings ) {
+	public function __construct( Netdevguru_Bridge_Settings $settings ) {
 		$this->settings = $settings;
 	}
 
@@ -71,8 +71,8 @@ class AutomateFlow_Client {
 	public function request( $method, $path, $body = null, array $query = array() ) {
 		if ( ! $this->settings->is_configured() ) {
 			return new WP_Error(
-				'automateflow_unconfigured',
-				__( 'AutomateFlow is not connected. Add your site URL and API key on the settings screen.', 'automateflow' )
+				'netdevguru_bridge_unconfigured',
+				__( 'AutomateFlow is not connected. Add your site URL and API key on the settings screen.', 'netdevguru-bridge-for-automateflow' )
 			);
 		}
 
@@ -106,10 +106,10 @@ class AutomateFlow_Client {
 			$this->settings->record_error( $response->get_error_message() );
 
 			return new WP_Error(
-				'automateflow_transport',
+				'netdevguru_bridge_transport',
 				sprintf(
 					/* translators: %s: underlying transport error. */
-					__( 'Could not reach AutomateFlow: %s', 'automateflow' ),
+					__( 'Could not reach AutomateFlow: %s', 'netdevguru-bridge-for-automateflow' ),
 					$response->get_error_message()
 				)
 			);
@@ -145,7 +145,7 @@ class AutomateFlow_Client {
 
 		// Logged with the path but never the body: a failing request's payload is exactly the
 		// place a subscriber's email address or an order's contents would be.
-		AutomateFlow_Logger::error(
+		Netdevguru_Bridge_Logger::error(
 			$error->get_error_message(),
 			array(
 				'endpoint' => $method . ' ' . $path,
@@ -170,24 +170,24 @@ class AutomateFlow_Client {
 			$window = isset( $data['window'] ) ? (string) $data['window'] : '';
 
 			return new WP_Error(
-				'automateflow_throttled',
+				'netdevguru_bridge_throttled',
 				'' !== $window
 					? sprintf(
 						/* translators: %s: rate-limit window name, e.g. "per_minute". */
-						__( 'AutomateFlow rate limit reached (%s). The request will be retried.', 'automateflow' ),
+						__( 'AutomateFlow rate limit reached (%s). The request will be retried.', 'netdevguru-bridge-for-automateflow' ),
 						$window
 					)
-					: __( 'AutomateFlow rate limit reached. The request will be retried.', 'automateflow' ),
+					: __( 'AutomateFlow rate limit reached. The request will be retried.', 'netdevguru-bridge-for-automateflow' ),
 				array( 'status' => $status )
 			);
 		}
 
 		if ( ! empty( $data['feature_limit_exceeded'] ) ) {
 			return new WP_Error(
-				'automateflow_feature',
+				'netdevguru_bridge_feature',
 				sprintf(
 					/* translators: %s: feature key, e.g. "api_access_enabled". */
-					__( 'Your AutomateFlow plan does not include this capability (%s).', 'automateflow' ),
+					__( 'Your AutomateFlow plan does not include this capability (%s).', 'netdevguru-bridge-for-automateflow' ),
 					isset( $data['feature'] ) ? (string) $data['feature'] : 'unknown'
 				),
 				array( 'status' => $status )
@@ -196,25 +196,25 @@ class AutomateFlow_Client {
 
 		if ( 401 === $status ) {
 			return new WP_Error(
-				'automateflow_auth',
+				'netdevguru_bridge_auth',
 				isset( $data['message'] )
 					? sanitize_text_field( (string) $data['message'] )
-					: __( 'AutomateFlow rejected the API key.', 'automateflow' ),
+					: __( 'AutomateFlow rejected the API key.', 'netdevguru-bridge-for-automateflow' ),
 				array( 'status' => $status )
 			);
 		}
 
 		if ( 422 === $status ) {
-			return new WP_Error( 'automateflow_invalid', $this->validation_message( $data ), array( 'status' => $status ) );
+			return new WP_Error( 'netdevguru_bridge_invalid', $this->validation_message( $data ), array( 'status' => $status ) );
 		}
 
 		return new WP_Error(
-			'automateflow_http_' . $status,
+			'netdevguru_bridge_http_' . $status,
 			isset( $data['message'] )
 				? sanitize_text_field( (string) $data['message'] )
 				: sprintf(
 					/* translators: %d: HTTP status code. */
-					__( 'AutomateFlow returned an unexpected response (HTTP %d).', 'automateflow' ),
+					__( 'AutomateFlow returned an unexpected response (HTTP %d).', 'netdevguru-bridge-for-automateflow' ),
 					$status
 				),
 			array( 'status' => $status )
@@ -240,7 +240,7 @@ class AutomateFlow_Client {
 		if ( empty( $parts ) ) {
 			return isset( $data['message'] )
 				? sanitize_text_field( (string) $data['message'] )
-				: __( 'AutomateFlow rejected the data as invalid.', 'automateflow' );
+				: __( 'AutomateFlow rejected the data as invalid.', 'netdevguru-bridge-for-automateflow' );
 		}
 
 		return implode( ' | ', $parts );

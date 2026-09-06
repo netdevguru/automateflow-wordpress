@@ -2,7 +2,7 @@
 /**
  * WordPress users → AutomateFlow contacts.
  *
- * @package AutomateFlow
+ * @package Netdevguru_Bridge_For_AutomateFlow
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -22,34 +22,34 @@ defined( 'ABSPATH' ) || exit;
  * it against whatever budget the API currently has. A 429 stops the batch with the remainder
  * still queued, so throttling costs latency instead of data.
  */
-class AutomateFlow_Contacts {
+class Netdevguru_Bridge_Contacts {
 
-	const QUEUE_HOOK = 'automateflow_process_sync_queue';
+	const QUEUE_HOOK = 'netdevguru_bridge_process_sync_queue';
 	const BATCH_SIZE = 20;
-	const META_KEY   = '_automateflow_contact_id';
-	const OPT_IN_KEY = 'automateflow_opt_in';
+	const META_KEY   = '_netdevguru_bridge_contact_id';
+	const OPT_IN_KEY = 'netdevguru_bridge_opt_in';
 
 	/**
 	 * API client.
 	 *
-	 * @var AutomateFlow_Client
+	 * @var Netdevguru_Bridge_Client
 	 */
 	private $client;
 
 	/**
 	 * Settings repository.
 	 *
-	 * @var AutomateFlow_Settings
+	 * @var Netdevguru_Bridge_Settings
 	 */
 	private $settings;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param AutomateFlow_Client   $client   API client.
-	 * @param AutomateFlow_Settings $settings Settings repository.
+	 * @param Netdevguru_Bridge_Client   $client   API client.
+	 * @param Netdevguru_Bridge_Settings $settings Settings repository.
 	 */
-	public function __construct( AutomateFlow_Client $client, AutomateFlow_Settings $settings ) {
+	public function __construct( Netdevguru_Bridge_Client $client, Netdevguru_Bridge_Settings $settings ) {
 		$this->client   = $client;
 		$this->settings = $settings;
 	}
@@ -146,7 +146,7 @@ class AutomateFlow_Contacts {
 			if ( is_wp_error( $result ) ) {
 				$code = $result->get_error_code();
 
-				if ( 'automateflow_throttled' === $code || 'automateflow_transport' === $code ) {
+				if ( 'netdevguru_bridge_throttled' === $code || 'netdevguru_bridge_transport' === $code ) {
 					// Retriable: keep this item and everything after it.
 					break;
 				}
@@ -166,10 +166,10 @@ class AutomateFlow_Contacts {
 		$this->save_queue( $queue );
 
 		if ( $processed > 0 ) {
-			AutomateFlow_Logger::info(
+			Netdevguru_Bridge_Logger::info(
 				sprintf(
 					/* translators: 1: number synced, 2: number still queued. */
-					__( 'Synced %1$d contact(s); %2$d still queued.', 'automateflow' ),
+					__( 'Synced %1$d contact(s); %2$d still queued.', 'netdevguru-bridge-for-automateflow' ),
 					$processed,
 					count( $queue )
 				)
@@ -229,8 +229,8 @@ class AutomateFlow_Contacts {
 			// A list membership failure is worth logging but must not fail the whole sync:
 			// the contact itself is saved, and re-queueing would re-upsert it pointlessly.
 			if ( is_wp_error( $added ) ) {
-				AutomateFlow_Logger::warning(
-					__( 'Contact saved but could not be added to the default list.', 'automateflow' ),
+				Netdevguru_Bridge_Logger::warning(
+					__( 'Contact saved but could not be added to the default list.', 'netdevguru-bridge-for-automateflow' ),
 					array( 'list_id' => $list_id )
 				);
 			}
@@ -276,7 +276,7 @@ class AutomateFlow_Contacts {
 		 * @param WP_User              $user   Source user.
 		 */
 		return apply_filters(
-			'automateflow_user_contact_fields',
+			'netdevguru_bridge_user_contact_fields',
 			array(
 				'first_name'    => $user->first_name,
 				'last_name'     => $user->last_name,
@@ -311,7 +311,7 @@ class AutomateFlow_Contacts {
 		 * @param bool    $eligible Current decision.
 		 * @param WP_User $user     User under consideration.
 		 */
-		return (bool) apply_filters( 'automateflow_should_sync_user', true, $user );
+		return (bool) apply_filters( 'netdevguru_bridge_should_sync_user', true, $user );
 	}
 
 	/**
@@ -334,8 +334,8 @@ class AutomateFlow_Contacts {
 		$result = $this->client->unsubscribe_contact( $contact_id );
 
 		if ( is_wp_error( $result ) ) {
-			AutomateFlow_Logger::warning(
-				__( 'Could not unsubscribe the contact for a deleted user.', 'automateflow' ),
+			Netdevguru_Bridge_Logger::warning(
+				__( 'Could not unsubscribe the contact for a deleted user.', 'netdevguru-bridge-for-automateflow' ),
 				array( 'contact_id' => $contact_id )
 			);
 		}
@@ -346,9 +346,9 @@ class AutomateFlow_Contacts {
 	 */
 	public function render_comment_opt_in() {
 		printf(
-			'<p class="comment-form-automateflow"><label for="%1$s"><input type="checkbox" name="%1$s" id="%1$s" value="1" /> %2$s</label></p>',
+			'<p class="comment-form-netdevguru-bridge"><label for="%1$s"><input type="checkbox" name="%1$s" id="%1$s" value="1" /> %2$s</label></p>',
 			esc_attr( self::OPT_IN_KEY ),
-			esc_html__( 'Subscribe me to the newsletter', 'automateflow' )
+			esc_html__( 'Subscribe me to the newsletter', 'netdevguru-bridge-for-automateflow' )
 		);
 	}
 
@@ -443,7 +443,7 @@ class AutomateFlow_Contacts {
 	 * @return array<string, array<string, mixed>>
 	 */
 	public function queue() {
-		$queue = get_option( AutomateFlow_Settings::OPT_SYNC_QUEUE, array() );
+		$queue = get_option( Netdevguru_Bridge_Settings::OPT_SYNC_QUEUE, array() );
 
 		return is_array( $queue ) ? $queue : array();
 	}
@@ -454,6 +454,6 @@ class AutomateFlow_Contacts {
 	 * @param array<string, array<string, mixed>> $queue Queue.
 	 */
 	private function save_queue( array $queue ) {
-		update_option( AutomateFlow_Settings::OPT_SYNC_QUEUE, $queue, false );
+		update_option( Netdevguru_Bridge_Settings::OPT_SYNC_QUEUE, $queue, false );
 	}
 }

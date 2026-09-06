@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="AutomateFlow">
-	<description>Coding standards for the AutomateFlow WordPress plugin.</description>
+<ruleset name="netdevguru Bridge for AutomateFlow">
+	<description>Coding standards for the netdevguru Bridge for AutomateFlow WordPress plugin.</description>
 
 	<file>.</file>
 
@@ -23,7 +23,7 @@
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">
-				<element value="automateflow"/>
+				<element value="netdevguru-bridge-for-automateflow"/>
 			</property>
 		</properties>
 	</rule>
@@ -31,9 +31,9 @@
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array">
-				<element value="automateflow"/>
-				<element value="AutomateFlow"/>
-				<element value="AUTOMATEFLOW"/>
+				<element value="netdevguru_bridge"/>
+				<element value="Netdevguru_Bridge"/>
+				<element value="NETDEVGURU_BRIDGE"/>
 			</property>
 		</properties>
 	</rule>
@@ -44,10 +44,10 @@
 		separate file. Both exclusions are scoped to that one file rather than the tree.
 	-->
 	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
-		<exclude-pattern>automateflow.php</exclude-pattern>
+		<exclude-pattern>netdevguru-bridge-for-automateflow.php</exclude-pattern>
 	</rule>
 	<rule ref="Universal.Files.SeparateFunctionsFromOO.Mixed">
-		<exclude-pattern>automateflow.php</exclude-pattern>
+		<exclude-pattern>netdevguru-bridge-for-automateflow.php</exclude-pattern>
 	</rule>
 
 	<!--
@@ -58,7 +58,7 @@
 		queue is empty.
 	-->
 	<rule ref="WordPress.WP.CronInterval.CronSchedulesInterval">
-		<exclude-pattern>automateflow.php</exclude-pattern>
+		<exclude-pattern>netdevguru-bridge-for-automateflow.php</exclude-pattern>
 	</rule>
 
 	<config name="minimum_wp_version" value="6.0"/>
